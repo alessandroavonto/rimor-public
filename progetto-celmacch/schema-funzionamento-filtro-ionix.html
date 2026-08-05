@@ -17,10 +17,12 @@
   /* ---------- header ---------- */
   .header { display: flex; align-items: center; gap: 14px; padding-bottom: 10px; border-bottom: 2.5px solid #14536e; }
   .header img { width: 52px; height: 52px; }
-  .h-title { flex: 1; }
-  .h-title h1 { font-size: 24px; letter-spacing: 0.5px; color: #14536e; }
-  .h-title h1 span { color: #0ea5c9; }
-  .h-title p { font-size: 12.5px; color: #47617a; margin-top: 2px; letter-spacing: 0.2px; }
+  .h-title h1 { font-size: 30px; letter-spacing: 1px; color: #0ea5c9; line-height: 1; }
+  .h-title h1 sup { color: #14536e; }
+  .h-title .motto { font-size: 11px; color: #14536e; letter-spacing: 2.5px; text-transform: uppercase;
+    font-style: italic; margin-top: 2px; }
+  .h-title .soc { font-size: 8.5px; color: #6b8299; margin-top: 3px; letter-spacing: 0.3px; }
+  .h-desc { flex: 1; text-align: center; font-size: 11.5px; color: #47617a; line-height: 1.35; padding: 0 18px; }
   .h-right { text-align: right; }
   .h-right .proj { font-size: 11px; color: #47617a; text-transform: uppercase; letter-spacing: 1px; }
   .h-right .cust { font-size: 17px; font-weight: bold; color: #14536e; letter-spacing: 0.5px; }
@@ -87,9 +89,11 @@
   <div class="header">
     <img src="logo-avonto.png" alt="logo">
     <div class="h-title">
-      <h1>FILTRO <span>IONIX</span><sup style="font-size:12px">&reg;</sup></h1>
-      <p>Filtro ionizzante a 4 cartucce autopulenti con lama soffiante ionizzante &mdash; Schema di funzionamento</p>
+      <h1>IONIX<sup style="font-size:13px">&reg;</sup></h1>
+      <div class="motto">to clean printing webs</div>
+      <div class="soc">RECUBE Engineering S.r.l. &middot; P.IVA 13351550010</div>
     </div>
+    <div class="h-desc">Filtro ionizzante a 4 cartucce autopulenti<br>con lama soffiante ionizzante &mdash; <b>Schema di funzionamento</b></div>
     <div class="h-right">
       <div class="proj">Documento tecnico per</div>
       <div class="cust">CELMACCH</div>
@@ -368,7 +372,7 @@
     </div>
   </div>
   <div class="footer">
-    <span>IONIX&reg; &mdash; Filtro ionizzante a cartucce autopulenti &middot; Schema di funzionamento</span>
+    <span>IONIX&reg; &middot; to clean printing webs &mdash; RECUBE Engineering S.r.l. &middot; P.IVA 13351550010</span>
     <span>Progetto CELMACCH &middot; Bozza per brochure &middot; 2026</span>
   </div>
 </div>
