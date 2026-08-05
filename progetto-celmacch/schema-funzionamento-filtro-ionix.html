@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>IONIX — Schema di funzionamento</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1123px; height: 794px; }
+  body {
+    font-family: 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif;
+    color: #1e293b; background: #ffffff; overflow: hidden;
+  }
+  .page { width: 1123px; height: 794px; padding: 18px 22px 14px; display: flex; flex-direction: column; position: relative;
+    background: linear-gradient(160deg, #ffffff 0%, #f4f8fb 55%, #eaf2f8 100%); }
+
+  /* ---------- header ---------- */
+  .header { display: flex; align-items: center; gap: 14px; padding-bottom: 10px; border-bottom: 2.5px solid #14536e; }
+  .header img { width: 52px; height: 52px; }
+  .h-title { flex: 1; }
+  .h-title h1 { font-size: 24px; letter-spacing: 0.5px; color: #14536e; }
+  .h-title h1 span { color: #0ea5c9; }
+  .h-title p { font-size: 12.5px; color: #47617a; margin-top: 2px; letter-spacing: 0.2px; }
+  .h-right { text-align: right; }
+  .h-right .proj { font-size: 11px; color: #47617a; text-transform: uppercase; letter-spacing: 1px; }
+  .h-right .cust { font-size: 17px; font-weight: bold; color: #14536e; letter-spacing: 0.5px; }
+
+  /* ---------- main grid ---------- */
+  .main { flex: 1; display: grid; grid-template-columns: 240px 1fr 240px; gap: 12px; padding-top: 10px; min-height: 0; }
+  .col { display: flex; flex-direction: column; gap: 10px; justify-content: space-between; }
+
+  .card { background: #ffffff; border: 1px solid #cfdde8; border-left: 4px solid #0ea5c9; border-radius: 7px;
+    padding: 8px 10px 9px; box-shadow: 0 1px 4px rgba(20,83,110,0.10); flex: 0 0 auto; }
+  .card h3 { font-size: 11px; color: #14536e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px; }
+  .card h3 .n { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px;
+    border-radius: 50%; background: #14536e; color: #fff; font-size: 10px; }
+  .card p { font-size: 9.2px; line-height: 1.32; color: #33465c; text-align: justify; }
+  .card b { color: #14536e; }
+  .card.orange { border-left-color: #e8730c; }
+  .card.orange h3 .n { background: #e8730c; }
+
+  /* ---------- display mock ---------- */
+  .display-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .bezel { background: linear-gradient(180deg, #2b3945, #17222b); border-radius: 14px; padding: 12px 12px 8px;
+    box-shadow: 0 8px 22px rgba(15,40,60,0.35), inset 0 1px 0 rgba(255,255,255,0.15); width: 100%; }
+  .screen { background: #0b1620; border-radius: 5px; overflow: hidden; border: 1px solid #000; }
+  .bezel .brand { text-align: center; color: #8fa6b5; font-size: 9px; letter-spacing: 3px; padding-top: 5px; text-transform: uppercase; }
+
+  .scr-top { display: flex; align-items: center; justify-content: space-between; padding: 5px 10px 3px; }
+  .scr-top .t { color: #7fd8ee; font-size: 12px; font-weight: bold; letter-spacing: 1.5px; }
+  .scr-top .st { display: flex; gap: 6px; align-items: center; }
+  .led { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 5px #22c55e; }
+  .scr-top .stt { color: #b9d4e0; font-size: 9px; letter-spacing: 1px; }
+
+  /* parameter bar */
+  .params { display: grid; grid-template-columns: repeat(3, 1fr) 86px; gap: 5px; padding: 6px 8px 8px; background: #0e1d29; }
+  .pcol { display: flex; flex-direction: column; gap: 5px; }
+  .field { background: #13283a; border: 1px solid #29506b; border-radius: 4px; padding: 3px 6px 4px; }
+  .field .lab { color: #86a8bd; font-size: 7.6px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .field .val { color: #eaf6fb; font-size: 11.5px; font-weight: bold; margin-top: 1px; }
+  .field .val small { color: #7fa3b8; font-size: 8px; font-weight: normal; }
+  .btns { display: flex; flex-direction: column; gap: 5px; }
+  .btn { flex: 1; border-radius: 5px; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: bold; letter-spacing: 1.5px; color: #fff; }
+  .btn.start { background: linear-gradient(180deg, #2ea44f, #1f7a38); box-shadow: 0 0 8px rgba(46,164,79,.5); }
+  .btn.stop  { background: linear-gradient(180deg, #d64545, #a52f2f); }
+
+  .under-display { margin-top: 6px; font-size: 9px; color: #47617a; text-align: center; line-height: 1.3; width: 94%; }
+  .under-display b { color: #14536e; }
+
+  /* ---------- bottom strip ---------- */
+  .bottom { margin-top: 8px; display: flex; gap: 12px; align-items: stretch; flex-shrink: 0; }
+  .energy { flex: 1; background: linear-gradient(90deg, #0d5c39, #15803d); border-radius: 7px; color: #eafff2;
+    padding: 8px 14px; display: flex; align-items: center; gap: 12px; }
+  .energy .ico { font-size: 22px; }
+  .energy h4 { font-size: 11.5px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .energy p { font-size: 9.6px; line-height: 1.3; color: #d3f5e0; }
+  .footer { margin-top: 7px; display: flex; justify-content: space-between; font-size: 8.5px; color: #6b8299;
+    border-top: 1px solid #cfdde8; padding-top: 4px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ================= HEADER ================= -->
+  <div class="header">
+    <img src="logo-avonto.png" alt="logo">
+    <div class="h-title">
+      <h1>FILTRO <span>IONIX</span><sup style="font-size:12px">&reg;</sup></h1>
+      <p>Filtro ionizzante a 4 cartucce autopulenti con lama soffiante ionizzante &mdash; Schema di funzionamento</p>
+    </div>
+    <div class="h-right">
+      <div class="proj">Documento tecnico per</div>
+      <div class="cust">CELMACCH</div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+
+    <!-- left column -->
+    <div class="col">
+      <div class="card">
+        <h3><span class="n">1</span> Filtrazione</h3>
+        <p><b>4 cartucce plissettate autopulenti</b>, appese al cielo del filtro: l&rsquo;aria aspirata
+        le attraversa dall&rsquo;esterno verso l&rsquo;interno e le polveri restano sulla superficie
+        filtrante. Il ventilatore <b>5,5&nbsp;kW</b> (montaggio verticale, forma B5) &egrave; posto sopra
+        le cartucce e lavora sempre su aria pulita.</p>
+      </div>
+      <div class="card orange">
+        <h3><span class="n">2</span> Pulizia automatica in cascata</h3>
+        <p><b>4 serbatoi singoli</b>, uno per cartuccia, caricati da un unico ingresso di
+        <b>aria compressa</b>. Quando il pressostato differenziale rileva un <b>&Delta;P cartucce</b>
+        oltre la soglia impostata (es. 70&nbsp;mm&nbsp;H<sub>2</sub>O), il PLC d&agrave; un impulso
+        alla <b>elettrovalvola EV1</b>: il serbatoio&nbsp;1 scarica in controcorrente nella cartuccia e
+        il colpo di pressione aziona <b>in cascata</b> le valvole pneumatiche dei serbatoi
+        2&nbsp;&rarr;&nbsp;3&nbsp;&rarr;&nbsp;4, senza altri componenti elettrici. Se il &Delta;P resta sopra
+        soglia, la pulizia si ripete all&rsquo;intervallo impostato (es. 10&nbsp;min); a ogni stop
+        dell&rsquo;impianto vengono eseguiti <b>5 cicli a filtro fermo</b>, distanziati 1&nbsp;min.</p>
+      </div>
+      <div class="card">
+        <h3><span class="n">3</span> Quadro elettrico</h3>
+        <p><b>CPU PLC</b> &middot; <b>display touch 7&Prime;</b> &middot; <b>modulo analogico</b>
+        (&Delta;P cartucce, portata mandata, portata ripresa, pressione di mandata) &middot;
+        <b>modulo digitale</b>: start/stop inverter, impulso EV1 pulizia, contatto di
+        <b>anomalia</b> verso l&rsquo;esterno, consenso <b>start/stop da remoto</b>.</p>
+      </div>
+    </div>
+
+    <!-- center: HMI display -->
+    <div class="display-wrap">
+      <div class="bezel">
+        <div class="screen">
+          <div class="scr-top">
+            <span class="t">IONIX &middot; SINOTTICO</span>
+            <span class="st"><span class="led"></span><span class="stt">AUTO &middot; IN MARCIA</span></span>
+          </div>
+
+          <!-- ================= SYNOPTIC SVG ================= -->
+          <svg viewBox="0 0 590 320" width="100%" style="display:block">
+            <defs>
+              <marker id="aC" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 z" fill="#3ec7e8"/>
+              </marker>
+              <marker id="aG" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 z" fill="#9db4c4"/>
+              </marker>
+              <marker id="aO" markerWidth="7" markerHeight="7" refX="5.5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 z" fill="#f59e0b"/>
+              </marker>
+              <linearGradient id="cab" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#33475a"/><stop offset="1" stop-color="#22303f"/>
+              </linearGradient>
+              <linearGradient id="ion" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#a855f7"/><stop offset="1" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+
+            <!-- screen grid backdrop -->
+            <rect x="0" y="0" width="590" height="320" fill="#0b1620"/>
+
+            <!-- ============ FILTER CABINET ============ -->
+            <!-- hopper -->
+            <path d="M96 250 L196 250 L166 292 L126 292 Z" fill="#22303f" stroke="#54708a" stroke-width="1.2"/>
+            <!-- body -->
+            <rect x="96" y="88" width="100" height="162" fill="url(#cab)" stroke="#54708a" stroke-width="1.2"/>
+            <!-- clean plenum -->
+            <rect x="96" y="66" width="100" height="22" fill="#123043" stroke="#54708a" stroke-width="1.2"/>
+            <!-- tube sheet -->
+            <line x1="96" y1="88" x2="196" y2="88" stroke="#7fd8ee" stroke-width="2"/>
+            <!-- 4 cartridges -->
+            <g>
+              <g transform="translate(104,92)"><rect width="18" height="92" rx="3" fill="#d8e6ef" stroke="#7d97ab"/>
+                <path d="M3 0 V92 M6.7 0 V92 M10.4 0 V92 M14.1 0 V92" stroke="#9db4c4" stroke-width="0.7"/></g>
+              <g transform="translate(127,92)"><rect width="18" height="92" rx="3" fill="#d8e6ef" stroke="#7d97ab"/>
+                <path d="M3 0 V92 M6.7 0 V92 M10.4 0 V92 M14.1 0 V92" stroke="#9db4c4" stroke-width="0.7"/></g>
+              <g transform="translate(150,92)"><rect width="18" height="92" rx="3" fill="#d8e6ef" stroke="#7d97ab"/>
+                <path d="M3 0 V92 M6.7 0 V92 M10.4 0 V92 M14.1 0 V92" stroke="#9db4c4" stroke-width="0.7"/></g>
+              <g transform="translate(173,92)"><rect width="18" height="92" rx="3" fill="#d8e6ef" stroke="#7d97ab"/>
+                <path d="M3 0 V92 M6.7 0 V92 M10.4 0 V92 M14.1 0 V92" stroke="#9db4c4" stroke-width="0.7"/></g>
+            </g>
+            <text x="146" y="243" fill="#9db4c4" font-size="8" text-anchor="middle">4 cartucce autopulenti</text>
+
+            <!-- ============ FAN B5 on top ============ -->
+            <circle cx="146" cy="44" r="19" fill="#16394e" stroke="#7fd8ee" stroke-width="1.5"/>
+            <g stroke="#7fd8ee" stroke-width="1.4" fill="none">
+              <path d="M146 44 L146 29 M146 44 L159 51 M146 44 L133 51"/>
+            </g>
+            <rect x="96" y="63" width="100" height="3" fill="#54708a"/>
+            <text x="106" y="34" fill="#b9d4e0" font-size="8" text-anchor="end">Ventilatore</text>
+            <text x="106" y="43" fill="#b9d4e0" font-size="8" text-anchor="end">5,5 kW &middot; B5</text>
+            <rect x="86" y="47" width="24" height="11" rx="2" fill="#1c4257" stroke="#3ec7e8"/>
+            <text x="98" y="55.5" fill="#7fd8ee" font-size="7.5" text-anchor="middle" font-weight="bold">INV</text>
+
+            <!-- ============ AIR TANKS + CASCADE ============ -->
+            <g>
+              <rect x="34" y="100" width="34" height="14" rx="7" fill="#3b4d60" stroke="#8aa2b5"/>
+              <rect x="34" y="128" width="34" height="14" rx="7" fill="#3b4d60" stroke="#8aa2b5"/>
+              <rect x="34" y="156" width="34" height="14" rx="7" fill="#3b4d60" stroke="#8aa2b5"/>
+              <rect x="34" y="184" width="34" height="14" rx="7" fill="#3b4d60" stroke="#8aa2b5"/>
+              <text x="30" y="110" fill="#9db4c4" font-size="7.5" text-anchor="end">S1</text>
+              <text x="30" y="138" fill="#9db4c4" font-size="7.5" text-anchor="end">S2</text>
+              <text x="30" y="166" fill="#9db4c4" font-size="7.5" text-anchor="end">S3</text>
+              <text x="30" y="194" fill="#9db4c4" font-size="7.5" text-anchor="end">S4</text>
+              <!-- blow lines into cabinet -->
+              <path d="M68 107 H96 M68 135 H96 M68 163 H96 M68 191 H96" stroke="#f59e0b" stroke-width="1.3"/>
+              <!-- EV1 -->
+              <rect x="70" y="98" width="14" height="9" rx="1.5" fill="#7a3a08" stroke="#f59e0b"/>
+              <text x="77" y="95.5" fill="#fbbf24" font-size="7.5" text-anchor="middle" font-weight="bold">EV1</text>
+              <path d="M77 90 L77 84 L73 80 M77 84 L81 80" stroke="#fbbf24" stroke-width="1" fill="none"/>
+              <!-- cascade arrows -->
+              <path d="M51 114 V126" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#aO)" stroke-dasharray="3 2"/>
+              <path d="M51 142 V154" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#aO)" stroke-dasharray="3 2"/>
+              <path d="M51 170 V182" stroke="#f59e0b" stroke-width="1.2" marker-end="url(#aO)" stroke-dasharray="3 2"/>
+              <text x="14" y="152" fill="#fbbf24" font-size="7.5" transform="rotate(-90 14 152)" text-anchor="middle">cascata pneumatica</text>
+              <!-- compressed air inlet -->
+              <path d="M51 232 V198" stroke="#f59e0b" stroke-width="1.6" marker-end="url(#aO)"/>
+              <circle cx="51" cy="238" r="5" fill="none" stroke="#f59e0b" stroke-width="1.4"/>
+              <text x="51" y="256" fill="#fbbf24" font-size="8" text-anchor="middle">aria</text>
+              <text x="51" y="265" fill="#fbbf24" font-size="8" text-anchor="middle">compressa</text>
+            </g>
+
+            <!-- ============ DELTA-P ============ -->
+            <path d="M196 76 H222 V96 M196 120 H222 V106" stroke="#9db4c4" stroke-width="1" fill="none"/>
+            <circle cx="222" cy="101" r="9" fill="#132a3a" stroke="#7fd8ee" stroke-width="1.3"/>
+            <text x="222" y="104" fill="#7fd8ee" font-size="7.5" text-anchor="middle" font-weight="bold">&Delta;P</text>
+            <rect x="202" y="126" width="64" height="21" rx="3" fill="#13283a" stroke="#29506b"/>
+            <text x="234" y="135" fill="#86a8bd" font-size="6.8" text-anchor="middle">&Delta;P CARTUCCE</text>
+            <text x="234" y="144" fill="#eaf6fb" font-size="8.5" text-anchor="middle" font-weight="bold">68 mm H₂O</text>
+            <path d="M225 110 L232 124" stroke="#29506b" stroke-width="1"/>
+
+            <!-- ============ DELIVERY LINE (mandata) ============ -->
+            <path d="M165 44 H540" stroke="#3ec7e8" stroke-width="2.4" fill="none"/>
+            <path d="M228 44 h1" stroke="#3ec7e8" stroke-width="2.4" marker-end="url(#aC)"/>
+            <path d="M508 44 h1" stroke="#3ec7e8" stroke-width="2.4" marker-end="url(#aC)"/>
+            <text x="380" y="58" fill="#7fd8ee" font-size="8" text-anchor="middle">MANDATA &middot; DN200</text>
+
+            <!-- bleed valve on delivery -->
+            <path d="M282 44 V64" stroke="#3ec7e8" stroke-width="1.6"/>
+            <path d="M277 64 L287 74 M287 64 L277 74" stroke="#3ec7e8" stroke-width="1.6"/>
+            <rect x="291" y="63" width="12" height="10" rx="2" fill="#1c4257" stroke="#3ec7e8"/>
+            <text x="297" y="71" fill="#7fd8ee" font-size="7" text-anchor="middle">M</text>
+            <path d="M282 74 V90" stroke="#9db4c4" stroke-width="1.4" marker-end="url(#aG)"/>
+            <text x="286" y="101" fill="#9db4c4" font-size="7" text-anchor="middle">sfioro eccesso</text>
+            <text x="286" y="109" fill="#9db4c4" font-size="7" text-anchor="middle">valvola autom. VA</text>
+
+            <!-- orifice flange delivery + FT -->
+            <path d="M340 36 V52 M346 36 V52" stroke="#eaf6fb" stroke-width="1.6"/>
+            <circle cx="343" cy="22" r="8" fill="#132a3a" stroke="#3ec7e8" stroke-width="1.2"/>
+            <text x="343" y="25" fill="#7fd8ee" font-size="6.5" text-anchor="middle" font-weight="bold">FT1</text>
+            <rect x="358" y="10" width="66" height="20" rx="3" fill="#13283a" stroke="#29506b"/>
+            <text x="391" y="18.5" fill="#86a8bd" font-size="6.8" text-anchor="middle">PORTATA MANDATA</text>
+            <text x="391" y="27" fill="#eaf6fb" font-size="8.5" text-anchor="middle" font-weight="bold">1500 m³/h</text>
+
+            <!-- pressure transmitter on delivery -->
+            <circle cx="472" cy="22" r="8" fill="#132a3a" stroke="#3ec7e8" stroke-width="1.2"/>
+            <text x="472" y="25" fill="#7fd8ee" font-size="6.5" text-anchor="middle" font-weight="bold">PT</text>
+            <path d="M472 30 V44" stroke="#9db4c4" stroke-width="1"/>
+            <text x="472" y="58" fill="#86a8bd" font-size="6.8" text-anchor="middle">P mandata</text>
+
+            <!-- ============ IONIZING BLADE ============ -->
+            <path d="M540 44 V70" stroke="#3ec7e8" stroke-width="2.4" marker-end="url(#aC)"/>
+            <rect x="516" y="74" width="48" height="190" rx="5" fill="#1a2836" stroke="#54708a" stroke-width="1.2"/>
+            <text x="540" y="68" fill="#7fd8ee" font-size="7.5" text-anchor="middle"> </text>
+            <!-- two central rows of holes -->
+            <g fill="#3ec7e8">
+              <circle cx="534" cy="86" r="1.6"/><circle cx="534" cy="98" r="1.6"/><circle cx="534" cy="110" r="1.6"/>
+              <circle cx="534" cy="122" r="1.6"/><circle cx="534" cy="134" r="1.6"/><circle cx="534" cy="146" r="1.6"/>
+              <circle cx="534" cy="158" r="1.6"/><circle cx="534" cy="170" r="1.6"/><circle cx="534" cy="182" r="1.6"/>
+              <circle cx="534" cy="194" r="1.6"/><circle cx="534" cy="206" r="1.6"/><circle cx="534" cy="218" r="1.6"/>
+              <circle cx="534" cy="230" r="1.6"/><circle cx="534" cy="242" r="1.6"/><circle cx="534" cy="252" r="1.6"/>
+            </g>
+            <g fill="#c084fc">
+              <circle cx="546" cy="86" r="1.6"/><circle cx="546" cy="98" r="1.6"/><circle cx="546" cy="110" r="1.6"/>
+              <circle cx="546" cy="122" r="1.6"/><circle cx="546" cy="134" r="1.6"/><circle cx="546" cy="146" r="1.6"/>
+              <circle cx="546" cy="158" r="1.6"/><circle cx="546" cy="170" r="1.6"/><circle cx="546" cy="182" r="1.6"/>
+              <circle cx="546" cy="194" r="1.6"/><circle cx="546" cy="206" r="1.6"/><circle cx="546" cy="218" r="1.6"/>
+              <circle cx="546" cy="230" r="1.6"/><circle cx="546" cy="242" r="1.6"/><circle cx="546" cy="252" r="1.6"/>
+            </g>
+            <!-- ionizing bar -->
+            <rect x="551" y="80" width="4" height="178" rx="2" fill="url(#ion)"/>
+            <!-- side suction slots -->
+            <g fill="none" stroke="#9db4c4" stroke-width="1.6">
+              <path d="M520 92 V116 M520 132 V156 M520 172 V196 M520 212 V236"/>
+              <path d="M560 92 V116 M560 132 V156 M560 172 V196 M560 212 V236"/>
+            </g>
+            <text x="532" y="277" fill="#c084fc" font-size="7.5" text-anchor="middle" font-weight="bold">LAMA IONIZZANTE</text>
+            <text x="532" y="286" fill="#9db4c4" font-size="6.5" text-anchor="middle">L 2100 &middot; ~350 fori &middot; 2 file</text>
+            <text x="532" y="294" fill="#9db4c4" font-size="6.5" text-anchor="middle">barra ionizzante &middot; asole laterali</text>
+
+            <!-- ============ RETURN LINE (ripresa) ============ -->
+            <path d="M516 250 H505 V306 H160 V292" stroke="#9db4c4" stroke-width="2.2" fill="none"/>
+            <path d="M420 306 h-10" stroke="#9db4c4" stroke-width="2.2" marker-end="url(#aG)"/>
+            <path d="M160 302 v-6" stroke="#9db4c4" stroke-width="2.2" marker-end="url(#aG)"/>
+            <text x="415" y="298" fill="#9db4c4" font-size="8" text-anchor="middle">RIPRESA &middot; DN200</text>
+            <!-- orifice flange return + FT2 -->
+            <path d="M300 298 V314 M306 298 V314" stroke="#eaf6fb" stroke-width="1.6"/>
+            <circle cx="303" cy="286" r="8" fill="#132a3a" stroke="#9db4c4" stroke-width="1.2"/>
+            <text x="303" y="289" fill="#b9d4e0" font-size="6.5" text-anchor="middle" font-weight="bold">FT2</text>
+            <rect x="196" y="276" width="66" height="20" rx="3" fill="#13283a" stroke="#29506b"/>
+            <text x="229" y="284.5" fill="#86a8bd" font-size="6.8" text-anchor="middle">PORTATA RIPRESA</text>
+            <text x="229" y="293" fill="#eaf6fb" font-size="8.5" text-anchor="middle" font-weight="bold">2500 m³/h</text>
+          </svg>
+
+          <!-- ================= PARAMETER BAR ================= -->
+          <div class="params">
+            <div class="pcol">
+              <div class="field"><div class="lab">&Delta;P avvio pulizia</div><div class="val">70 <small>mm H<sub>2</sub>O</small></div></div>
+              <div class="field"><div class="lab">Intervallo pulizia</div><div class="val">10 <small>min</small></div></div>
+            </div>
+            <div class="pcol">
+              <div class="field"><div class="lab">Cicli a filtro fermo</div><div class="val">5 <small>cicli</small></div></div>
+              <div class="field"><div class="lab">Intervallo cicli</div><div class="val">1 <small>min</small></div></div>
+            </div>
+            <div class="pcol">
+              <div class="field"><div class="lab">Set portata mandata</div><div class="val">1500 <small>m&sup3;/h</small></div></div>
+              <div class="field"><div class="lab">Set portata ripresa</div><div class="val">2500 <small>m&sup3;/h</small></div></div>
+            </div>
+            <div class="btns">
+              <div class="btn start">START</div>
+              <div class="btn stop">STOP</div>
+            </div>
+          </div>
+        </div>
+        <div class="brand">IONIX &middot; HMI TOUCH 7&Prime;</div>
+      </div>
+      <div class="under-display">Interfaccia utente su <b>display touch 7&Prime;</b>: sinottico d&rsquo;impianto in tempo reale,
+        set-point impostabili dall&rsquo;operatore, <b>start/stop locale</b>, portate e pressioni misurate in continuo.</div>
+    </div>
+
+    <!-- right column -->
+    <div class="col">
+      <div class="card">
+        <h3><span class="n">4</span> Portata di mandata costante</h3>
+        <p>Sul primo tratto della mandata (tubo <b>DN200</b>) &egrave; montata una <b>flangia calibrata</b>:
+        dalla caduta di pressione il PLC ricava la portata reale (<b>FT1</b>). L&rsquo;<b>inverter</b>
+        modula i giri del ventilatore per mantenere il set di mandata (es. 1500&nbsp;m&sup3;/h)
+        anche quando le cartucce si sporcano: il ventilatore accelera solo quanto serve.</p>
+      </div>
+      <div class="card">
+        <h3><span class="n">5</span> Portata di ripresa regolabile</h3>
+        <p>La <b>valvola automatica VA</b> sulla mandata scarica l&rsquo;aria in eccesso: cos&igrave;
+        la ripresa pu&ograve; superare la mandata (es. <b>1500&nbsp;/&nbsp;2500&nbsp;m&sup3;/h</b>).
+        Una seconda <b>flangia calibrata</b> sulla ripresa (<b>FT2</b>) misura la portata aspirata
+        e il PLC modula la valvola per mantenerla al set impostato: mai pi&ugrave; aria di quella necessaria.</p>
+      </div>
+      <div class="card">
+        <h3><span class="n">6</span> Lama soffiante ionizzante</h3>
+        <p>Circuito <b>chiuso</b> col filtro: la mandata alimenta la <b>lama L&nbsp;2100&nbsp;mm</b>
+        che soffia al centro da <b>due file di fori</b> (~350 fori); sotto una delle due file corre la
+        <b>barra ionizzante</b> che neutralizza le cariche elettrostatiche. L&rsquo;aria viene riaspirata
+        dalle <b>asole laterali</b> esterne alle file di fori e torna al filtro dal canale di ripresa.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOTTOM ================= -->
+  <div class="bottom">
+    <div class="energy">
+      <div class="ico">&#9851;</div>
+      <div>
+        <h4>Risparmio energetico by design</h4>
+        <p>Ventilatore a giri variabili che insegue il set di portata &middot; pulizia cartucce solo quando serve &middot;
+        aria di ripresa regolata al minimo necessario &middot; portate e pressioni misurate, impostate e visualizzate a display.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <span>IONIX&reg; &mdash; Filtro ionizzante a cartucce autopulenti &middot; Schema di funzionamento</span>
+    <span>Progetto CELMACCH &middot; Bozza per brochure &middot; 2026</span>
+  </div>
+</div>
+</body>
+</html>
