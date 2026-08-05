@@ -9,6 +9,8 @@ Foglio unico A4 orizzontale, pensato per essere inoltrato a CELMACCH e riutilizz
 | `schema-funzionamento-filtro-ionix.html` | Sorgente grafico della pagina | Riferimento / modifiche |
 | `preview.png` | Anteprima rapida della pagina | Controllo visivo |
 | `logo-avonto.png` | Logo per l'intestazione | — |
+| `plc/programma-plc-ionix.st` | Programma PLC in Structured Text (Delta ISPSoft/DIADesigner) | Da importare e collaudare |
+| `plc/LEGGIMI-plc.md` | Hardware, lista I/O, mappa registri HMI, note di messa in servizio | Riferimento |
 
 ## Contenuto del foglio
 
