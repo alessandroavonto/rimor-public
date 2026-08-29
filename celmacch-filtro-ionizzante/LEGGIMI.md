@@ -1,7 +1,9 @@
-# Progetto CELMACCH — Filtro IONIX
+# CELMACCH — Filtro ionizzante IONIX®
 
-Schema di funzionamento del filtro ionizzante a 4 cartucce autopulenti con lama soffiante ionizzante.
-Foglio unico A4 orizzontale, pensato per essere inoltrato a CELMACCH e riutilizzato nella brochure.
+*to clean printing webs* — RECUBE Engineering S.r.l. · P.IVA 13351550010
+
+Cartella unica del progetto: schema di funzionamento per CELMACCH e programma PLC del
+filtro ionizzante a 4 cartucce autopulenti con lama soffiante ionizzante.
 
 | File | Cosa è | Uso |
 |---|---|---|
