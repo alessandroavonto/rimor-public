@@ -1,0 +1,22 @@
+{
+  "name": "Life Diet",
+  "short_name": "Life Diet",
+  "description": "La dieta che si adatta alla tua vita: propone, registra, reagisce e compensa.",
+  "lang": "it",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3F5F9",
+  "theme_color": "#3A54B4",
+  "categories": ["health", "lifestyle", "food"],
+  "icons": [
+    {"src": "icone/icona-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icone/icona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icone/icona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Fuori programma", "short_name": "Fuori programma", "url": "./index.html#fuori"},
+    {"name": "Peso di oggi", "short_name": "Peso", "url": "./index.html#peso"}
+  ]
+}

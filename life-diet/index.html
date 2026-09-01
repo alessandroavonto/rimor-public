@@ -1,0 +1,2276 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Life Diet</title>
+<meta name="description" content="La dieta che si adatta alla tua vita: propone, registra, reagisce e compensa.">
+<meta name="theme-color" content="#3A54B4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone/icona-192.png">
+<link rel="apple-touch-icon" href="icone/icona-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* ============================================================
+   Life Diet — token di design
+   Accento indaco (brand) tenuto separato dal semaforo di stato
+   verde/ambra/rosso, che nell'app è linguaggio, non decorazione.
+   ============================================================ */
+:root{
+  color-scheme: light;
+  --sfondo:#F3F5F9;
+  --superficie:#FFFFFF;
+  --superficie-2:#F7F8FC;
+  --bordo:#E1E5EE;
+  --bordo-forte:#C9CFDD;
+  --ink:#161A22;
+  --ink-2:#59606F;
+  --ink-3:#88909F;
+  --accento:#3A54B4;
+  --accento-ink:#2A3E8C;
+  --accento-tenue:#E8EBF9;
+  --verde:#2E7D3A;
+  --verde-tenue:#E4F2E5;
+  --ambra:#B57F08;
+  --ambra-tenue:#FBF0DA;
+  --rosso:#B03A2E;
+  --rosso-tenue:#FAE7E3;
+  --ombra:0 1px 2px rgba(22,26,34,.06), 0 8px 24px -16px rgba(22,26,34,.35);
+  --ombra-alta:0 -2px 30px rgba(22,26,34,.14);
+  --r-s:8px; --r-m:14px; --r-l:20px;
+  --sp:16px;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --testo:"Karla", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --dati:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --sfondo:#101219;
+    --superficie:#181B23;
+    --superficie-2:#1F232C;
+    --bordo:#2A2F3B;
+    --bordo-forte:#3C4353;
+    --ink:#E9EBF2;
+    --ink-2:#A6ADBE;
+    --ink-3:#7A8294;
+    --accento:#8FA2F2;
+    --accento-ink:#B3C0FF;
+    --accento-tenue:#212944;
+    --verde:#6FC47E;
+    --verde-tenue:#1B2A1F;
+    --ambra:#E3B24A;
+    --ambra-tenue:#2C2415;
+    --rosso:#F0897B;
+    --rosso-tenue:#301C1A;
+    --ombra:0 1px 2px rgba(0,0,0,.5), 0 8px 24px -16px rgba(0,0,0,.8);
+    --ombra-alta:0 -2px 30px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --sfondo:#101219; --superficie:#181B23; --superficie-2:#1F232C;
+  --bordo:#2A2F3B; --bordo-forte:#3C4353;
+  --ink:#E9EBF2; --ink-2:#A6ADBE; --ink-3:#7A8294;
+  --accento:#8FA2F2; --accento-ink:#B3C0FF; --accento-tenue:#212944;
+  --verde:#6FC47E; --verde-tenue:#1B2A1F;
+  --ambra:#E3B24A; --ambra-tenue:#2C2415;
+  --rosso:#F0897B; --rosso-tenue:#301C1A;
+  --ombra:0 1px 2px rgba(0,0,0,.5), 0 8px 24px -16px rgba(0,0,0,.8);
+  --ombra-alta:0 -2px 30px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--sfondo);
+  color:var(--ink);
+  font-family:var(--testo);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accento);outline-offset:2px;border-radius:4px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--dati);font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- guscio applicazione ---------- */
+.app{
+  min-height:100dvh;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  max-width:560px;
+  margin:0 auto;
+  background:var(--sfondo);
+}
+.testata{
+  position:sticky;top:0;z-index:30;
+  background:color-mix(in srgb, var(--sfondo) 88%, transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--bordo);
+  padding:calc(env(safe-area-inset-top) + 10px) var(--sp) 10px;
+  display:flex;align-items:center;gap:12px;
+}
+.marchio{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:1}
+.marchio span{color:var(--accento)}
+.testata-data{margin-left:auto;text-align:right;font-size:11px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+.testata-data b{display:block;font-size:13px;color:var(--ink-2);letter-spacing:0;text-transform:none;font-weight:600}
+
+main{padding:var(--sp) var(--sp) 96px}
+.vista{display:none;flex-direction:column;gap:14px}
+.vista.attiva{display:flex}
+
+/* ---------- barra di navigazione ---------- */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:40;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  background:color-mix(in srgb, var(--superficie) 94%, transparent);
+  backdrop-filter:blur(14px);
+  border-top:1px solid var(--bordo);
+  padding-bottom:env(safe-area-inset-bottom);
+  max-width:560px;margin:0 auto;
+}
+.nav button{
+  background:none;border:0;padding:9px 2px 8px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10.5px;font-weight:600;color:var(--ink-3);letter-spacing:.01em;
+}
+.nav button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.nav button[aria-current="page"]{color:var(--accento)}
+
+/* ---------- superfici ---------- */
+.scheda{background:var(--superficie);border:1px solid var(--bordo);border-radius:var(--r-m);padding:14px;box-shadow:var(--ombra)}
+.scheda.piatta{box-shadow:none;background:var(--superficie-2)}
+.titolo-sez{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+.etichetta{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.riga{display:flex;align-items:center;gap:10px}
+.riga-tra{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.col{display:flex;flex-direction:column;gap:10px}
+.sottile{color:var(--ink-2);font-size:13px}
+hr.sep{border:0;border-top:1px solid var(--bordo);margin:2px 0}
+
+/* ---------- semaforo ---------- */
+.semaforo{display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 9px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid}
+.semaforo .luce{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none}
+.st-verde{color:var(--verde);background:var(--verde-tenue);border-color:color-mix(in srgb,var(--verde) 26%,transparent)}
+.st-ambra{color:var(--ambra);background:var(--ambra-tenue);border-color:color-mix(in srgb,var(--ambra) 30%,transparent)}
+.st-rosso{color:var(--rosso);background:var(--rosso-tenue);border-color:color-mix(in srgb,var(--rosso) 28%,transparent)}
+.st-neutro{color:var(--ink-2);background:var(--superficie-2);border-color:var(--bordo)}
+
+/* ---------- cruscotto ---------- */
+.cruscotto{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.anello{width:104px;height:104px;flex:none}
+.anello text{font-family:var(--dati)}
+.residuo{font-size:12px;color:var(--ink-2)}
+.macro{display:flex;flex-direction:column;gap:9px;min-width:0}
+.macro-riga{display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:12px}
+.macro-riga .nome{font-weight:600}
+.macro-riga .val{font-family:var(--dati);font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.barra{grid-column:1/-1;height:6px;border-radius:99px;background:var(--superficie-2);border:1px solid var(--bordo);overflow:hidden}
+.barra i{display:block;height:100%;background:var(--accento);border-radius:99px;transition:width .35s ease}
+.barra i.ok{background:var(--verde)} .barra i.alto{background:var(--ambra)} .barra i.eccesso{background:var(--rosso)}
+
+/* ---------- timeline della giornata ---------- */
+.timeline{display:flex;flex-direction:column;gap:0}
+.slot{display:grid;grid-template-columns:52px 1fr;gap:12px;position:relative}
+.slot::before{content:"";position:absolute;left:25px;top:0;bottom:0;width:2px;background:var(--bordo)}
+.slot:first-child::before{top:22px}
+.slot:last-child::before{bottom:auto;height:22px}
+.slot-ora{position:relative;z-index:1;padding-top:14px;text-align:center}
+.slot-ora .punto{width:12px;height:12px;border-radius:50%;background:var(--superficie);border:2.5px solid var(--bordo-forte);margin:0 auto 5px}
+.slot.fatto .slot-ora .punto{background:var(--verde);border-color:var(--verde)}
+.slot.adattato .slot-ora .punto{background:var(--ambra);border-color:var(--ambra)}
+.slot.saltato .slot-ora .punto{background:var(--superficie);border-color:var(--rosso)}
+.slot.ora-corrente .slot-ora .punto{border-color:var(--accento);box-shadow:0 0 0 4px var(--accento-tenue)}
+.slot-ora .h{font-family:var(--dati);font-size:11px;color:var(--ink-3)}
+.slot-corpo{padding:10px 0 16px;min-width:0}
+.slot-testa{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.slot-nome{font-weight:700;font-size:15px}
+.slot-quota{font-family:var(--dati);font-size:11.5px;color:var(--ink-3);margin-left:auto}
+
+.proposta{border:1px solid var(--bordo);border-radius:var(--r-m);padding:11px 12px;background:var(--superficie);margin-top:8px}
+.proposta.scelta{border-color:var(--accento);background:var(--accento-tenue)}
+.proposta h4{margin:0;font-size:14px;font-weight:700;line-height:1.3}
+.proposta .dettaglio{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.proposta .numeri{font-family:var(--dati);font-size:11.5px;color:var(--ink-3);margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+.proposta .azioni{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.voce{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px dashed var(--bordo);font-size:13.5px}
+.voce:first-of-type{border-top:0}
+.voce .g{font-family:var(--dati);font-size:11.5px;color:var(--ink-3);flex:none}
+.voce .kc{font-family:var(--dati);font-size:12px;margin-left:auto;flex:none}
+.voce button{background:none;border:0;color:var(--ink-3);cursor:pointer;padding:2px 4px;font-size:15px;line-height:1}
+.tag-aderenza{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 6px;border-radius:5px}
+.ad-piena{background:var(--verde-tenue);color:var(--verde)}
+.ad-variante{background:var(--ambra-tenue);color:var(--ambra)}
+.ad-fuori{background:var(--rosso-tenue);color:var(--rosso)}
+
+/* ---------- controlli ---------- */
+.btn{
+  border:1px solid var(--bordo-forte);background:var(--superficie);color:var(--ink);
+  border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;gap:6px;transition:transform .08s ease, background .15s ease;
+}
+.btn:active{transform:scale(.97)}
+.btn.primario{background:var(--accento);border-color:var(--accento);color:#fff}
+:root[data-theme="dark"] .btn.primario, :root:not([data-theme="light"]) .btn.primario{color:#10131C}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .btn.primario{color:#fff}}
+.btn.piccolo{padding:6px 11px;font-size:12px}
+.btn.testo{border-color:transparent;background:transparent;color:var(--accento);padding:6px 8px}
+.btn.largo{width:100%;justify-content:center}
+.btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.chip{border:1px solid var(--bordo-forte);background:var(--superficie);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accento);border-color:var(--accento);color:#fff}
+:root[data-theme="dark"] .chip[aria-pressed="true"]{color:#10131C}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+
+.campo{display:flex;flex-direction:column;gap:5px}
+.campo label{font-size:12px;font-weight:600;color:var(--ink-2)}
+.campo input,.campo select,.campo textarea{
+  background:var(--superficie);border:1px solid var(--bordo-forte);border-radius:var(--r-s);
+  padding:9px 10px;font-size:15px;width:100%;
+}
+.campo input[type="number"]{font-family:var(--dati)}
+.griglia-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.griglia-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+/* ---------- pannello a comparsa ---------- */
+dialog.foglio{
+  border:0;padding:0;margin:0 auto;width:100%;max-width:560px;
+  position:fixed;bottom:0;top:auto;max-height:88dvh;
+  background:var(--superficie);color:var(--ink);
+  border-radius:var(--r-l) var(--r-l) 0 0;box-shadow:var(--ombra-alta);
+}
+dialog.foglio::backdrop{background:rgba(10,12,18,.5)}
+.foglio-testa{position:sticky;top:0;background:var(--superficie);padding:14px var(--sp) 8px;border-bottom:1px solid var(--bordo);display:flex;align-items:center;gap:10px;z-index:2}
+.foglio-corpo{padding:14px var(--sp) calc(env(safe-area-inset-bottom) + 20px);overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.foglio-testa .titolo-sez{flex:1}
+.chiudi{background:var(--superficie-2);border:1px solid var(--bordo);border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;line-height:1;color:var(--ink-2)}
+
+.risultati{display:flex;flex-direction:column;max-height:260px;overflow-y:auto;border:1px solid var(--bordo);border-radius:var(--r-s)}
+.risultati button{text-align:left;background:none;border:0;border-bottom:1px solid var(--bordo);padding:9px 10px;cursor:pointer;display:flex;gap:8px;align-items:baseline}
+.risultati button:last-child{border-bottom:0}
+.risultati .kc{margin-left:auto;font-family:var(--dati);font-size:11.5px;color:var(--ink-3)}
+
+/* ---------- grafici ---------- */
+.grafico{width:100%;height:auto;display:block;overflow:visible}
+.grafico text{font-family:var(--dati);font-size:9px;fill:var(--ink-3)}
+.grafico .asse{stroke:var(--bordo);stroke-width:1}
+.legenda{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);margin-top:8px}
+.legenda span{display:inline-flex;align-items:center;gap:6px}
+.legenda i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+table.dati{width:100%;border-collapse:collapse;font-size:13px}
+table.dati th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);padding:6px 4px;border-bottom:1px solid var(--bordo);font-weight:700}
+table.dati td{padding:8px 4px;border-bottom:1px solid var(--bordo);vertical-align:middle}
+table.dati td.num{font-family:var(--dati);text-align:right;font-variant-numeric:tabular-nums}
+.avvolgi{overflow-x:auto}
+
+.nota{font-size:12px;color:var(--ink-2);background:var(--superficie-2);border:1px solid var(--bordo);border-left:3px solid var(--accento);border-radius:var(--r-s);padding:9px 11px}
+.nota.attenzione{border-left-color:var(--ambra)}
+.freccia-su{color:var(--rosso)} .freccia-giu{color:var(--verde)}
+
+@media (min-width:600px){
+  body{font-size:15.5px}
+  .app{max-width:100%;display:block;padding-bottom:0}
+  main{max-width:900px;margin:0 auto;padding-bottom:40px}
+  .testata{max-width:900px;margin:0 auto;border:0}
+  .nav{position:sticky;top:0;max-width:900px;border-top:0;border-bottom:1px solid var(--bordo);grid-template-columns:repeat(5,auto);justify-content:center;gap:6px;background:var(--sfondo)}
+  .nav button{flex-direction:row;padding:10px 14px;font-size:13px}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="testata">
+    <div class="marchio">Life<span>Diet</span></div>
+    <div class="testata-data">
+      <span id="etichetta-giorno">oggi</span>
+      <b id="data-lunga">—</b>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="Sezioni">
+    <button data-vista="oggi" aria-current="page">
+      <svg viewBox="0 0 24 24"><path d="M12 3v9l5 3"/><circle cx="12" cy="12" r="9"/></svg>Oggi</button>
+    <button data-vista="agenda">
+      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Agenda</button>
+    <button data-vista="corpo">
+      <svg viewBox="0 0 24 24"><path d="M4 19c2-5 4-7 8-7s6 2 8 7"/><circle cx="12" cy="6" r="3"/></svg>Corpo</button>
+    <button data-vista="salute">
+      <svg viewBox="0 0 24 24"><path d="M3 13h4l2-5 3 10 2.5-7 1.5 2h5"/></svg>Salute</button>
+    <button data-vista="profilo">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2 2 2 0 1 1-4 0 1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 4 14a2 2 0 1 1 0-4 1.7 1.7 0 0 0 1.5-2.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 11 4a2 2 0 1 1 4 0 1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.7 1.7 0 0 0 20 10a2 2 0 1 1 0 4z"/></svg>Profilo</button>
+  </nav>
+
+  <main>
+
+    <!-- ============================ OGGI ============================ -->
+    <section class="vista attiva" id="vista-oggi">
+      <div class="riga-tra">
+        <button class="btn piccolo" id="giorno-prec" aria-label="Giorno precedente">‹</button>
+        <div id="semaforo-testata"></div>
+        <button class="btn piccolo" id="giorno-succ" aria-label="Giorno successivo">›</button>
+      </div>
+
+      <div class="scheda" id="scheda-stato">
+        <div class="etichetta">Il piano di oggi</div>
+        <p id="frase-coach" style="margin-top:6px;font-size:14.5px;line-height:1.45"></p>
+        <div id="dettaglio-banca" class="numeri mono" style="margin-top:10px"></div>
+      </div>
+
+      <div class="scheda">
+        <div class="cruscotto">
+          <svg class="anello" viewBox="0 0 120 120" role="img" aria-labelledby="tit-anello">
+            <title id="tit-anello">Energia consumata rispetto al budget di oggi</title>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--superficie-2)" stroke-width="11"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="var(--bordo)" stroke-width="11" stroke-dasharray="0 999" id="anello-fondo"/>
+            <circle id="anello-arco" cx="60" cy="60" r="50" fill="none" stroke="var(--accento)" stroke-width="11"
+                    stroke-linecap="round" stroke-dasharray="0 314" transform="rotate(-90 60 60)"/>
+            <text id="anello-num" x="60" y="57" text-anchor="middle" font-size="23" font-weight="600" fill="var(--ink)">0</text>
+            <text x="60" y="73" text-anchor="middle" font-size="9.5" fill="var(--ink-3)">kcal su</text>
+            <text id="anello-tot" x="60" y="86" text-anchor="middle" font-size="11" fill="var(--ink-2)">0</text>
+          </svg>
+          <div class="macro" id="macro-barre"></div>
+        </div>
+        <div class="riga" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+          <button class="btn piccolo" id="btn-acqua">💧 <span id="conta-acqua">0</span> bicchieri</button>
+          <button class="btn piccolo" id="btn-attivita">Attività</button>
+          <button class="btn piccolo primario" id="btn-fuori-programma">Fuori programma</button>
+        </div>
+      </div>
+
+      <div class="timeline" id="timeline"></div>
+
+      <div class="scheda" id="scheda-bilancio">
+        <div class="riga-tra"><div class="titolo-sez">Bilancio della giornata</div>
+          <button class="btn piccolo" id="btn-chiudi-giornata">Chiudi</button></div>
+        <div id="bilancio-corpo" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <!-- ============================ AGENDA ============================ -->
+    <section class="vista" id="vista-agenda">
+      <div class="scheda">
+        <div class="titolo-sez">Cosa hai in programma</div>
+        <p class="sottile" style="margin-top:5px">Dimmi prima cosa ti aspetta: sposto le calorie sui pasti giusti invece di
+          farti sgarrare. Se poi cambia, ricalcolo.</p>
+        <div class="chips" style="margin-top:12px" id="chips-evento"></div>
+        <div class="col" style="margin-top:12px">
+          <div class="griglia-2">
+            <div class="campo"><label for="ev-giorno">Quando</label><input type="date" id="ev-giorno"></div>
+            <div class="campo"><label for="ev-slot">Pasto</label>
+              <select id="ev-slot"><option value="pranzo">Pranzo</option><option value="cena">Cena</option>
+              <option value="colazione">Colazione</option><option value="spuntino">Spuntino</option><option value="merenda">Merenda</option></select></div>
+          </div>
+          <div class="campo"><label for="ev-nota">Nota (con chi, dove)</label><input id="ev-nota" placeholder="Cena con cliente — pesce e vino"></div>
+          <button class="btn primario largo" id="btn-salva-evento">Metti in agenda</button>
+        </div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Prossimi giorni</div>
+        <div id="lista-agenda" style="margin-top:10px"></div>
+      </div>
+      <div class="scheda">
+        <div class="riga-tra"><div class="titolo-sez">Movimento programmato</div></div>
+        <p class="sottile" style="margin-top:5px">Programmato e fatto sono due cose diverse: conta solo il secondo.</p>
+        <div id="lista-attivita" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <!-- ============================ CORPO ============================ -->
+    <section class="vista" id="vista-corpo">
+      <div class="scheda">
+        <div class="riga-tra">
+          <div><div class="etichetta">Peso</div>
+            <div class="mono" style="font-size:30px;font-weight:600;line-height:1.1" id="peso-attuale">—</div>
+            <div class="sottile" id="peso-trend">—</div></div>
+          <div style="text-align:right">
+            <div class="etichetta">Obiettivo</div>
+            <div class="mono" style="font-size:18px;font-weight:600" id="peso-obiettivo-v">—</div>
+            <div class="sottile" id="peso-eta">—</div></div>
+        </div>
+        <div class="riga" style="margin-top:12px;gap:8px">
+          <input type="number" step="0.1" id="input-peso" placeholder="kg" class="mono" style="flex:1;background:var(--superficie);border:1px solid var(--bordo-forte);border-radius:8px;padding:9px 10px">
+          <button class="btn primario" id="btn-salva-peso">Registra</button>
+        </div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Andamento del peso</div>
+        <div id="grafico-peso" style="margin-top:8px"></div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Misure e massa grassa</div>
+        <p class="sottile" style="margin-top:5px">Le circonferenze dicono cose che la bilancia non dice: si può calare di grasso
+          restando allo stesso peso.</p>
+        <div class="griglia-3" style="margin-top:12px" id="campi-misure"></div>
+        <button class="btn largo" id="btn-salva-misure" style="margin-top:10px">Registra misure</button>
+        <div id="esito-composizione" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- ============================ SALUTE ============================ -->
+    <section class="vista" id="vista-salute">
+      <div class="scheda">
+        <div class="titolo-sez">Esami del sangue</div>
+        <p class="sottile" style="margin-top:5px">Inserisci il referto: diventa il punto di partenza. Da lì misuro se quello
+          che mangi sta spingendo i valori nella direzione giusta.</p>
+        <button class="btn largo primario" id="btn-nuovo-esame" style="margin-top:12px">Inserisci un referto</button>
+        <div class="avvolgi" style="margin-top:12px"><div id="tabella-sangue"></div></div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Dove stanno andando</div>
+        <p class="sottile" style="margin-top:5px">Stima di tendenza calcolata su come hai mangiato e su quanto ti sei mosso.
+          Non è un referto e non sostituisce il medico: serve a capire se la rotta è giusta.</p>
+        <div id="proiezione-sangue" style="margin-top:12px"></div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Leve alimentari degli ultimi 14 giorni</div>
+        <div id="leve-qualita" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <!-- ============================ PROFILO ============================ -->
+    <section class="vista" id="vista-profilo">
+      <div class="scheda">
+        <div class="titolo-sez">Chi sei</div>
+        <div class="col" style="margin-top:12px">
+          <div class="griglia-2">
+            <div class="campo"><label for="p-nome">Nome</label><input id="p-nome"></div>
+            <div class="campo"><label for="p-sesso">Sesso</label><select id="p-sesso"><option value="m">Uomo</option><option value="f">Donna</option></select></div>
+            <div class="campo"><label for="p-eta">Età</label><input type="number" id="p-eta"></div>
+            <div class="campo"><label for="p-altezza">Altezza (cm)</label><input type="number" id="p-altezza"></div>
+            <div class="campo"><label for="p-peso">Peso (kg)</label><input type="number" step="0.1" id="p-peso"></div>
+            <div class="campo"><label for="p-peso-obiettivo">Peso obiettivo (kg)</label><input type="number" step="0.1" id="p-peso-obiettivo"></div>
+          </div>
+          <div class="campo"><label for="p-attivita">Quanto ti muovi in una giornata tipo</label>
+            <select id="p-attivita">
+              <option value="1.2">Sedentario — scrivania, poco altro</option>
+              <option value="1.375">Leggero — cammino un po', 1-2 allenamenti</option>
+              <option value="1.55">Moderato — in piedi o 3-4 allenamenti</option>
+              <option value="1.725">Attivo — lavoro fisico o 5-6 allenamenti</option>
+              <option value="1.9">Molto attivo — atleta o lavoro pesante</option>
+            </select></div>
+          <div class="campo"><label for="p-obiettivo">Obiettivo</label>
+            <select id="p-obiettivo"><option value="perdere">Perdere peso</option><option value="mantenere">Mantenere</option><option value="aumentare">Aumentare massa</option></select></div>
+          <div class="campo"><label for="p-settimane">In quanto tempo (settimane)</label><input type="number" id="p-settimane"></div>
+          <div id="verdetto-ritmo"></div>
+          <div class="campo"><label for="p-rientro">Quando sgarro, come rientro</label>
+            <select id="p-rientro">
+              <option value="1">Tutto il giorno dopo — taglio netto</option>
+              <option value="3">Spalmato su tre giorni</option>
+              <option value="7">Piano, sulla settimana</option>
+            </select></div>
+          <div class="campo"><label for="p-regime">Come mangi</label>
+            <select id="p-regime"><option value="onnivoro">Di tutto</option><option value="pesce">Pesce sì, carne no</option>
+            <option value="vegetariano">Vegetariano</option><option value="vegano">Vegano</option></select></div>
+          <div><div class="etichetta" style="margin-bottom:7px">Cosa non mangi</div><div class="chips" id="chips-esclusioni"></div></div>
+          <button class="btn primario largo" id="btn-salva-profilo">Salva e ricalcola</button>
+        </div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Il tuo fabbisogno</div>
+        <div id="riepilogo-energia" style="margin-top:10px"></div>
+      </div>
+      <div class="scheda">
+        <div class="titolo-sez">Dati e privacy</div>
+        <p class="sottile" style="margin-top:5px">Tutto resta sul telefono, in memoria locale. Niente server, niente account.
+          Il backup lo fai tu con il file qui sotto.</p>
+        <div class="riga" style="margin-top:12px;gap:8px;flex-wrap:wrap">
+          <button class="btn piccolo" id="btn-export">Esporta backup</button>
+          <button class="btn piccolo" id="btn-import">Importa backup</button>
+          <button class="btn piccolo" id="btn-tema">Tema</button>
+          <button class="btn piccolo" id="btn-azzera">Azzera tutto</button>
+        </div>
+        <input type="file" id="file-import" accept="application/json" class="sr">
+      </div>
+      <p class="nota attenzione">Life Diet è uno strumento di auto-osservazione, non un dispositivo medico. Non
+        formula diagnosi né terapie. Per patologie, farmaci, gravidanza o diete sotto le 1200 kcal parla con il tuo medico.</p>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============================ PANNELLI ============================ -->
+<dialog class="foglio" id="foglio-cibo">
+  <form method="dialog" class="foglio-testa"><div class="titolo-sez" id="foglio-cibo-tit">Cosa hai mangiato</div>
+    <button class="chiudi" aria-label="Chiudi">✕</button></form>
+  <div class="foglio-corpo">
+    <div class="campo"><label for="cerca-cibo">Cerca un alimento</label>
+      <input id="cerca-cibo" placeholder="pasta, yogurt, pizza, vino…" autocomplete="off"></div>
+    <div class="risultati" id="risultati-cibo"></div>
+    <div id="quantita-blocco" hidden>
+      <div class="scheda piatta">
+        <div class="riga-tra"><b id="cibo-scelto-nome">—</b><span class="mono" id="cibo-scelto-kcal">—</span></div>
+        <div class="etichetta" style="margin-top:12px">Quanto ne hai mangiato</div>
+        <div class="chips" style="margin-top:7px" id="chips-porzione"></div>
+        <div class="riga" style="margin-top:10px;gap:8px">
+          <input type="number" id="input-grammi" class="mono" style="flex:1;background:var(--superficie);border:1px solid var(--bordo-forte);border-radius:8px;padding:9px 10px">
+          <span class="sottile" id="unita-grammi">g</span>
+        </div>
+        <p class="sottile" style="margin-top:8px" id="aiuto-porzione"></p>
+      </div>
+      <div class="scheda piatta" style="margin-top:10px">
+        <div class="etichetta">Non sai il peso? Fai una foto</div>
+        <p class="sottile" style="margin-top:5px" id="stato-foto">Al ristorante non pesi niente: fotografa il piatto e stimo
+          io la porzione, oppure usa i riferimenti qui sotto.</p>
+        <div class="riga" style="margin-top:9px;gap:8px;flex-wrap:wrap">
+          <button class="btn piccolo" id="btn-foto">📷 Fotografa il piatto</button>
+          <button class="btn piccolo" id="btn-riferimenti">Riferimenti a occhio</button>
+        </div>
+        <input type="file" id="file-foto" accept="image/*" capture="environment" class="sr">
+        <div id="anteprima-foto" style="margin-top:10px"></div>
+      </div>
+      <button class="btn primario largo" id="btn-aggiungi-cibo" style="margin-top:12px">Aggiungi al diario</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="foglio" id="foglio-attivita">
+  <form method="dialog" class="foglio-testa"><div class="titolo-sez">Movimento</div>
+    <button class="chiudi" aria-label="Chiudi">✕</button></form>
+  <div class="foglio-corpo">
+    <div class="campo"><label for="att-tipo">Cosa fai</label><select id="att-tipo"></select></div>
+    <div class="griglia-2">
+      <div class="campo"><label for="att-previsti">Minuti previsti</label><input type="number" id="att-previsti" value="45"></div>
+      <div class="campo"><label for="att-fatti">Minuti fatti</label><input type="number" id="att-fatti" placeholder="dopo"></div>
+    </div>
+    <p class="sottile" id="att-stima">—</p>
+    <button class="btn primario largo" id="btn-salva-attivita">Salva</button>
+    <div id="lista-attivita-oggi"></div>
+  </div>
+</dialog>
+
+<dialog class="foglio" id="foglio-esame">
+  <form method="dialog" class="foglio-testa"><div class="titolo-sez">Referto</div>
+    <button class="chiudi" aria-label="Chiudi">✕</button></form>
+  <div class="foglio-corpo">
+    <div class="campo"><label for="es-data">Data del prelievo</label><input type="date" id="es-data"></div>
+    <div class="griglia-2" id="campi-sangue"></div>
+    <button class="btn primario largo" id="btn-salva-esame">Salva referto</button>
+  </div>
+</dialog>
+
+<script>
+"use strict";
+/* ================================================================
+   LIFE DIET — motore adattivo
+   La dieta non impone la settimana: registra quello che succede,
+   propone il passo successivo e compensa quello che è già successo.
+   ================================================================ */
+
+/* ---------------- 1. Alimenti (valori per 100 g o per pezzo) ----------------
+   Fonte dei valori: tabelle di composizione degli alimenti di uso comune
+   (CREA / USDA), arrotondati. Sono riferimenti, non pesate di laboratorio.
+   id | nome | categoria | kcal | prot | carb | gras | saturi | fibra | zuccheri | sodio mg | alcol g | tag | grammi per pezzo */
+const RIGHE_ALIMENTI = `
+pasta|Pasta secca|cereali|353|12.5|74|1.5|0.3|2.7|3|5|0|glutine,vegano
+pasta_int|Pasta integrale|cereali|325|13|66|2.5|0.5|9|3|5|0|glutine,vegano
+riso|Riso bianco|cereali|332|6.7|80|0.4|0.1|1|0|2|0|vegano
+riso_int|Riso integrale|cereali|337|7.5|77|1.9|0.4|3|0.7|4|0|vegano
+farro|Farro perlato|cereali|335|15|67|2.5|0.4|6.8|1.5|8|0|glutine,vegano
+orzo|Orzo perlato|cereali|320|10|71|1.4|0.3|9|0.8|9|0|glutine,vegano
+couscous|Couscous|cereali|350|12|72|0.6|0.1|5|0.2|10|0|glutine,vegano
+pane|Pane bianco|cereali|275|8.6|57|1|0.2|3.2|2|500|0|glutine,vegano|50
+pane_int|Pane integrale|cereali|243|9|48|1.3|0.3|6.5|2|450|0|glutine,vegano|50
+fette_bisc|Fette biscottate|cereali|410|11|76|6|1|3.5|6|450|0|glutine,vegano|8
+avena|Fiocchi d'avena|cereali|380|13|63|7|1.2|10|1|5|0|glutine,vegano
+cereali_zucch|Cereali da colazione|cereali|375|7|84|1.5|0.4|3|22|500|0|glutine,vegano
+patate|Patate lesse|cereali|78|2|17|0.1|0|1.6|0.9|8|0|vegano
+polenta|Polenta|cereali|85|2|18|0.4|0.1|1.2|0.3|5|0|vegano
+grissini|Grissini|cereali|430|12|70|12|2|3.5|2|900|0|glutine,vegano|6
+cracker|Cracker salati|cereali|430|10|70|12|2.5|3|2|700|0|glutine,vegano
+ceci|Ceci lessati|legumi|120|7|18|2.5|0.3|7|1|10|0|vegano
+lenticchie|Lenticchie lessate|legumi|116|9|20|0.4|0.1|8|1|8|0|vegano
+fagioli|Fagioli borlotti lessati|legumi|110|7|17|0.5|0.1|6.5|0.6|8|0|vegano
+piselli|Piselli|legumi|81|5.4|12|0.4|0.1|5|5.7|5|0|vegano
+hummus|Hummus|legumi|230|7|14|17|2.4|6|0.8|380|0|vegano
+tofu|Tofu|legumi|145|15|2|8|1.2|1|0.6|10|0|vegano
+tempeh|Tempeh|legumi|190|19|9|11|2.2|6|1|10|0|vegano
+edamame|Edamame|legumi|125|11|9|5|0.6|5|2|6|0|vegano
+pollo|Petto di pollo|carne|110|23|0|1.5|0.4|0|0|60|0|carne
+tacchino|Fesa di tacchino|carne|107|24|0|1.2|0.3|0|0|55|0|carne
+manzo_magro|Manzo magro|carne|130|21|0|5|2|0|0|60|0|carne
+vitello|Vitello|carne|120|21|0|4|1.5|0|0|65|0|carne
+maiale|Lombo di maiale|carne|145|22|0|6|2.2|0|0|60|0|carne
+tagliata|Tagliata di manzo|carne|180|27|0|8|3.2|0|0|75|0|carne
+hamburger|Hamburger di manzo|carne|230|20|0|17|7|0|0|300|0|carne
+crudo|Prosciutto crudo|carne|220|26|0|13|4.5|0|0|2300|0|carne
+cotto|Prosciutto cotto|carne|160|20|1|8|3|0|1|900|0|carne
+bresaola|Bresaola|carne|151|32|0|2|0.8|0|0|1600|0|carne
+salame|Salame|carne|400|26|1|33|12|0|0|1800|0|carne
+salsiccia|Salsiccia|carne|320|15|1|29|11|0|0|900|0|carne
+salmone|Salmone|pesce|185|20|0|12|2.5|0|0|60|0|pesce,omega3
+sgombro|Sgombro|pesce|205|19|0|14|3.3|0|0|80|0|pesce,omega3
+alici|Alici|pesce|130|20|0|5|1.3|0|0|100|0|pesce,omega3
+branzino|Branzino o orata|pesce|100|20|0|2|0.5|0|0|70|0|pesce
+merluzzo|Merluzzo|pesce|82|18|0|0.7|0.1|0|0|70|0|pesce
+tonno_nat|Tonno al naturale|pesce|116|26|0|1|0.3|0|0|350|0|pesce
+tonno_olio|Tonno sott'olio sgocciolato|pesce|190|25|0|10|1.8|0|0|400|0|pesce
+gamberi|Gamberi|pesce|85|18|0|1|0.2|0|0|150|0|pesce
+calamari|Calamari|pesce|92|16|1|1.5|0.3|0|0|110|0|pesce
+insalata_mare|Insalata di mare|pesce|110|14|4|4|0.7|0.3|0|300|0|pesce
+fritto_misto|Fritto misto di pesce|pesce|290|15|18|18|2.8|1|0.5|420|0|pesce,glutine
+uovo|Uovo|uova|143|12.6|0.7|9.5|3|0|0.4|130|0|uova|55
+albume|Albume|uova|52|11|0.7|0.2|0|0|0.7|165|0|uova
+latte|Latte intero|latticini|64|3.2|4.8|3.6|2.2|0|4.8|45|0|lattosio
+latte_scremato|Latte scremato|latticini|36|3.4|5|0.2|0.1|0|5|45|0|lattosio
+yogurt_greco0|Yogurt greco 0%|latticini|57|10|4|0.4|0.2|0|4|40|0|lattosio|150
+yogurt_greco|Yogurt greco intero|latticini|97|9|4|5|3.2|0|4|38|0|lattosio|150
+yogurt_bianco|Yogurt bianco intero|latticini|66|3.8|4.5|3.4|2.1|0|4.5|50|0|lattosio|125
+ricotta|Ricotta vaccina|latticini|146|11|3|10|6|0|3|80|0|lattosio
+mozzarella|Mozzarella|latticini|253|18|1|20|12|0|1|400|0|lattosio
+parmigiano|Parmigiano|latticini|392|33|0|29|19|0|0|1600|0|lattosio
+stracchino|Stracchino|latticini|300|18|1|25|16|0|1|500|0|lattosio
+gorgonzola|Gorgonzola|latticini|324|19|1|27|18|0|1|900|0|lattosio
+burro|Burro|grassi|758|0.8|1|83|52|0|1|10|0|lattosio
+olio|Olio extravergine|grassi|884|0|0|100|14|0|0|2|0|vegano
+maionese|Maionese|grassi|680|1|1.5|75|11|0|1.5|600|0|uova
+pesto|Pesto|grassi|450|6|5|45|8|1.5|2|700|0|lattosio,guscio
+sugo|Sugo di pomodoro|grassi|60|1.5|6|3|0.5|1.5|5|350|0|vegano
+ragu|Ragù di carne|grassi|130|8|6|8|3|1.5|4|400|0|carne
+panna|Panna da cucina|grassi|337|2|3|35|22|0|3|50|0|lattosio
+insalata|Insalata mista|verdura|20|1.5|2|0.2|0|1.8|1.5|10|0|vegano
+pomodori|Pomodori|verdura|18|0.9|3.5|0.2|0|1.2|3|5|0|vegano
+zucchine|Zucchine|verdura|17|1.3|2|0.1|0|1.2|2|4|0|vegano
+melanzane|Melanzane|verdura|25|1|4|0.2|0|2.6|3|3|0|vegano
+broccoli|Broccoli|verdura|34|3|4|0.4|0.1|3|1.5|30|0|vegano
+spinaci|Spinaci|verdura|23|2.9|1.5|0.4|0.1|2.2|0.4|70|0|vegano
+carote|Carote|verdura|41|0.9|8|0.2|0|2.8|4.7|70|0|vegano
+finocchi|Finocchi|verdura|31|1.2|5|0.2|0|3.1|3|50|0|vegano
+peperoni|Peperoni|verdura|27|1|6|0.3|0|2|4|4|0|vegano
+verdure_grigl|Verdure grigliate con olio|verdura|75|1.5|5|5.5|0.8|2.5|3|120|0|vegano
+minestrone|Minestrone|verdura|45|2|6|1.3|0.2|2.5|2|250|0|vegano
+mela|Mela|frutta|52|0.3|14|0.2|0|2.4|10|1|0|vegano|150
+banana|Banana|frutta|89|1.1|23|0.3|0.1|2.6|12|1|0|vegano|120
+arancia|Arancia|frutta|47|0.9|12|0.1|0|2.4|9|1|0|vegano|180
+pera|Pera|frutta|57|0.4|15|0.1|0|3.1|10|1|0|vegano|170
+kiwi|Kiwi|frutta|61|1.1|15|0.5|0|3|9|3|0|vegano|80
+fragole|Fragole|frutta|32|0.7|8|0.3|0|2|4.9|1|0|vegano
+mirtilli|Mirtilli|frutta|57|0.7|14|0.3|0|2.4|10|1|0|vegano
+uva|Uva|frutta|69|0.7|18|0.2|0|0.9|16|2|0|vegano
+pesca|Pesca|frutta|39|0.9|10|0.3|0|1.5|8|0|0|vegano|150
+anguria|Anguria|frutta|30|0.6|8|0.2|0|0.4|6|1|0|vegano
+mandorle|Mandorle|frutta secca|579|21|22|50|3.8|12|4|1|0|vegano,guscio
+noci|Noci|frutta secca|654|15|14|65|6|6.7|2.6|2|0|vegano,guscio,omega3
+nocciole|Nocciole|frutta secca|628|15|17|61|4.5|10|4|0|0|vegano,guscio
+pistacchi|Pistacchi|frutta secca|560|20|28|45|5.6|10|8|1|0|vegano,guscio
+arachidi|Arachidi|frutta secca|567|26|16|49|7|8.5|4|18|0|vegano,guscio
+pasta_pom|Pasta al pomodoro (piatto)|piatti|150|5|25|3.5|0.6|2|3|300|0|glutine,vegano
+pasta_carb|Pasta alla carbonara (piatto)|piatti|250|10|26|12|5|1.5|1.5|500|0|glutine,uova,lattosio,carne
+lasagne|Lasagne (porzione)|piatti|180|9|16|9|4.5|1.2|2|420|0|glutine,lattosio,carne
+risotto|Risotto|piatti|160|4|22|6|3|1|1.5|350|0|lattosio
+pizza|Pizza margherita|piatti|270|11|33|10|4|2.2|3|600|0|glutine,lattosio|550
+focaccia|Focaccia|piatti|300|7|40|12|2|2|2|700|0|glutine,vegano
+cotoletta|Cotoletta impanata|piatti|290|18|14|18|5|0.8|1|380|0|glutine,uova,carne
+caprese|Caprese|piatti|180|11|3|14|8|0.8|2.5|300|0|lattosio
+bruschetta|Bruschetta|piatti|200|5|26|8|1.2|2|2|400|0|glutine,vegano
+patate_forno|Patate al forno|piatti|130|2.5|20|4.5|0.7|2|1|200|0|vegano
+patatine_fritte|Patatine fritte|piatti|312|3.4|41|15|2.5|3.5|0.5|250|0|vegano
+patatine_sacch|Patatine in sacchetto|dolci|536|6|53|34|3.5|4|0.5|800|0|vegano
+cioccolato_fond|Cioccolato fondente|dolci|546|8|46|31|19|10|24|10|0|vegano
+cioccolato_latte|Cioccolato al latte|dolci|535|7|57|30|18|2|52|80|0|lattosio
+gelato|Gelato|dolci|207|3.5|24|11|7|0.5|22|70|0|lattosio
+tiramisu|Tiramisù|dolci|280|5|30|15|9|0.5|22|90|0|glutine,uova,lattosio
+cornetto|Cornetto|dolci|400|7|46|20|10|1.8|18|380|0|glutine,uova,lattosio|60
+biscotti|Biscotti secchi|dolci|430|7|72|13|5|2.5|24|300|0|glutine,lattosio|8
+miele|Miele|dolci|304|0.3|82|0|0|0|82|4|0|vegano
+marmellata|Marmellata|dolci|250|0.5|60|0|0|1|55|10|0|vegano
+zucchero|Zucchero|dolci|400|0|100|0|0|0|100|0|0|vegano
+caffe|Caffè|bevande|2|0.1|0.3|0|0|0|0|1|0|vegano|30
+cappuccino|Cappuccino|bevande|55|3|5|2.5|1.6|0|5|45|0|lattosio|150
+spremuta|Spremuta d'arancia|bevande|45|0.7|10|0.1|0|0.2|9|1|0|vegano|200
+succo|Succo di frutta|bevande|50|0.2|12|0|0|0.2|11|5|0|vegano|200
+cola|Bibita gassata|bevande|42|0|10.6|0|0|0|10.6|10|0|vegano|330
+vino_rosso|Vino rosso|bevande|85|0.1|2.6|0|0|0|0.6|4|10.6|vegano|125
+vino_bianco|Vino bianco|bevande|82|0.1|2.6|0|0|0|1|4|10.3|vegano|125
+birra|Birra|bevande|43|0.5|3.6|0|0|0|0.1|4|3.9|glutine,vegano|330
+spritz|Spritz|bevande|120|0|12|0|0|0|11|8|7|vegano|180
+amaro|Amaro o distillato|bevande|250|0|5|0|0|0|5|2|33|vegano|40
+acqua|Acqua|bevande|0|0|0|0|0|0|0|1|0|vegano|250
+`;
+
+const ALIMENTI = {};
+RIGHE_ALIMENTI.trim().split("\n").forEach(function(r){
+  const c = r.split("|");
+  ALIMENTI[c[0]] = {
+    id:c[0], nome:c[1], cat:c[2],
+    kcal:+c[3], p:+c[4], c:+c[5], g:+c[6], sat:+c[7], fib:+c[8], zuc:+c[9], sod:+c[10], alc:+c[11],
+    tag:c[12].split(","), pezzo: c[13] ? +c[13] : null
+  };
+});
+
+/* ---------------- 2. Movimento (MET) ---------------- */
+const ATTIVITA = [
+  {id:"camminata", nome:"Camminata tranquilla", met:3.5},
+  {id:"camminata_veloce", nome:"Camminata veloce", met:4.8},
+  {id:"corsa", nome:"Corsa", met:9.8},
+  {id:"bici", nome:"Bicicletta", met:6.8},
+  {id:"pesi", nome:"Palestra, pesi", met:5.0},
+  {id:"nuoto", nome:"Nuoto", met:7.0},
+  {id:"padel", nome:"Padel o tennis", met:6.5},
+  {id:"calcetto", nome:"Calcetto", met:7.0},
+  {id:"sci", nome:"Sci", met:7.0},
+  {id:"yoga", nome:"Yoga o stretching", met:3.0},
+  {id:"giardino", nome:"Lavori in casa o giardino", met:4.0},
+  {id:"scale", nome:"Scale, cantiere, lavoro fisico", met:6.0}
+];
+
+/* ---------------- 3. Contesti di vita ---------------- */
+const CONTESTI = [
+  {id:"casa", nome:"A casa", desc:"peso e scelgo io"},
+  {id:"ufficio", nome:"Ufficio", desc:"schiscetta o mensa"},
+  {id:"bar", nome:"Bar", desc:"quello che c'è al banco"},
+  {id:"ristorante", nome:"Ristorante", desc:"porzioni non mie"},
+  {id:"hotel", nome:"Hotel", desc:"buffet, poca scelta"},
+  {id:"lavoro", nome:"Cena di lavoro", desc:"non decido io"}
+];
+
+/* ---------------- 4. Proposte: mattoni componibili ----------------
+   Ogni proposta ha voci scalabili entro un minimo e un massimo: il motore
+   le adatta al budget del momento invece di imporre una grammatura fissa. */
+const PROPOSTE = [
+  {id:"c1", slot:"colazione", nome:"Yogurt greco, avena e frutti di bosco", ctx:["casa","hotel"],
+   voci:[{a:"yogurt_greco0",g:170,min:120,max:250},{a:"avena",g:40,min:25,max:70},{a:"mirtilli",g:80,min:50,max:150},{a:"mandorle",g:10,min:0,max:20}],
+   nota:"In hotel c'è solo lo yogurt intero? Prendilo e segnalo: ricalcolo il resto della giornata."},
+  {id:"c2", slot:"colazione", nome:"Pane integrale, ricotta e miele", ctx:["casa"],
+   voci:[{a:"pane_int",g:70,min:40,max:110},{a:"ricotta",g:80,min:50,max:120},{a:"miele",g:12,min:0,max:20},{a:"caffe",g:30,min:0,max:60}]},
+  {id:"c3", slot:"colazione", nome:"Uova strapazzate e pane", ctx:["casa","hotel"],
+   voci:[{a:"uovo",g:110,min:55,max:165},{a:"pane_int",g:60,min:40,max:100},{a:"pomodori",g:80,min:0,max:150},{a:"olio",g:5,min:3,max:10}]},
+  {id:"c4", slot:"colazione", nome:"Cappuccino e cornetto", ctx:["bar"],
+   voci:[{a:"cappuccino",g:150,min:120,max:200},{a:"cornetto",g:60,min:45,max:80}],
+   nota:"La colazione al bar non è un errore: la pago con il resto della giornata."},
+  {id:"c5", slot:"colazione", nome:"Latte, cereali e banana", ctx:["casa","hotel"],
+   voci:[{a:"latte_scremato",g:200,min:150,max:300},{a:"cereali_zucch",g:40,min:25,max:70},{a:"banana",g:100,min:60,max:150}]},
+  {id:"c6", slot:"colazione", nome:"Porridge d'avena e mela", ctx:["casa"],
+   voci:[{a:"avena",g:55,min:35,max:80},{a:"latte_scremato",g:200,min:120,max:280},{a:"mela",g:130,min:80,max:180},{a:"noci",g:10,min:0,max:20}]},
+  {id:"c7", slot:"colazione", nome:"Buffet salato: uova, frutta, pane", ctx:["hotel"],
+   voci:[{a:"uovo",g:110,min:55,max:165},{a:"pane",g:50,min:30,max:90},{a:"arancia",g:150,min:100,max:200},{a:"cotto",g:40,min:0,max:70}]},
+  {id:"s1", slot:"spuntino", nome:"Frutta fresca", ctx:["casa","ufficio","bar","viaggio"],
+   voci:[{a:"mela",g:150,min:100,max:220}]},
+  {id:"s2", slot:"spuntino", nome:"Yogurt greco", ctx:["casa","ufficio"],
+   voci:[{a:"yogurt_greco0",g:150,min:100,max:200}]},
+  {id:"s3", slot:"spuntino", nome:"Frutta secca", ctx:["casa","ufficio","viaggio"],
+   voci:[{a:"mandorle",g:20,min:10,max:35}]},
+  {id:"s4", slot:"spuntino", nome:"Caffè e basta", ctx:["bar","ufficio","lavoro"],
+   voci:[{a:"caffe",g:30,min:30,max:60}],
+   nota:"Se il budget è stretto, lo spuntino salta: meglio arrivare a cena con margine."},
+  {id:"s5", slot:"spuntino", nome:"Pane e prosciutto crudo", ctx:["bar","viaggio"],
+   voci:[{a:"pane",g:50,min:30,max:80},{a:"crudo",g:40,min:25,max:60}]},
+  {id:"m1", slot:"merenda", nome:"Frutta e mandorle", ctx:["casa","ufficio"],
+   voci:[{a:"pera",g:150,min:100,max:200},{a:"mandorle",g:12,min:0,max:25}]},
+  {id:"m2", slot:"merenda", nome:"Yogurt e frutti di bosco", ctx:["casa","ufficio"],
+   voci:[{a:"yogurt_greco0",g:150,min:100,max:200},{a:"fragole",g:100,min:50,max:180}]},
+  {id:"m3", slot:"merenda", nome:"Quadretto di fondente e caffè", ctx:["casa","bar","ufficio"],
+   voci:[{a:"cioccolato_fond",g:15,min:8,max:30},{a:"caffe",g:30,min:0,max:60}]},
+  {id:"p1", slot:"pranzo", nome:"Pasta al pomodoro, insalata, olio", ctx:["casa","ufficio"],
+   voci:[{a:"pasta_int",g:90,min:60,max:140},{a:"sugo",g:100,min:60,max:150},{a:"parmigiano",g:10,min:0,max:20},{a:"insalata",g:120,min:80,max:200},{a:"olio",g:10,min:6,max:16}]},
+  {id:"p2", slot:"pranzo", nome:"Riso, pollo e verdure", ctx:["casa","ufficio"],
+   voci:[{a:"riso_int",g:80,min:55,max:120},{a:"pollo",g:150,min:100,max:220},{a:"zucchine",g:180,min:100,max:250},{a:"olio",g:10,min:6,max:16}]},
+  {id:"p3", slot:"pranzo", nome:"Farro, ceci e pomodorini", ctx:["casa","ufficio"],
+   voci:[{a:"farro",g:70,min:50,max:110},{a:"ceci",g:150,min:100,max:220},{a:"pomodori",g:150,min:80,max:220},{a:"olio",g:10,min:6,max:16}]},
+  {id:"p4", slot:"pranzo", nome:"Insalatona: tonno, uovo, verdure, pane", ctx:["casa","ufficio","bar"],
+   voci:[{a:"insalata",g:150,min:100,max:220},{a:"tonno_nat",g:110,min:80,max:160},{a:"uovo",g:55,min:0,max:110},{a:"pane_int",g:50,min:30,max:90},{a:"olio",g:10,min:6,max:16}]},
+  {id:"p5", slot:"pranzo", nome:"Piadina o panino con bresaola e verdure", ctx:["bar","viaggio","ufficio"],
+   voci:[{a:"pane",g:100,min:70,max:150},{a:"bresaola",g:70,min:50,max:100},{a:"insalata",g:60,min:30,max:120},{a:"olio",g:6,min:3,max:12}]},
+  {id:"p6", slot:"pranzo", nome:"Primo piccolo, secondo di pesce, verdura", ctx:["ristorante","lavoro","hotel"],
+   voci:[{a:"pasta_pom",g:180,min:120,max:300},{a:"branzino",g:180,min:120,max:250},{a:"verdure_grigl",g:150,min:80,max:220},{a:"pane",g:30,min:0,max:70}],
+   nota:"Al ristorante non pesi: chiedi una porzione piccola di primo e punta sul secondo."},
+  {id:"p7", slot:"pranzo", nome:"Pizza margherita", ctx:["ristorante","lavoro"],
+   voci:[{a:"pizza",g:400,min:280,max:600},{a:"insalata",g:100,min:0,max:200}],
+   nota:"Una pizza ci sta: mangiala e la compenso, invece di farti rinunciare e mollare tutto."},
+  {id:"p8", slot:"pranzo", nome:"Lenticchie, patate e verdura", ctx:["casa"],
+   voci:[{a:"lenticchie",g:200,min:130,max:300},{a:"patate",g:180,min:100,max:280},{a:"spinaci",g:150,min:80,max:220},{a:"olio",g:10,min:6,max:16}]},
+  {id:"n1", slot:"cena", nome:"Pesce al forno, patate e verdura", ctx:["casa"],
+   voci:[{a:"branzino",g:200,min:140,max:280},{a:"patate_forno",g:180,min:100,max:280},{a:"broccoli",g:180,min:100,max:250},{a:"olio",g:10,min:6,max:16}]},
+  {id:"n2", slot:"cena", nome:"Frittata, insalata e pane", ctx:["casa"],
+   voci:[{a:"uovo",g:150,min:110,max:220},{a:"insalata",g:150,min:80,max:220},{a:"pane_int",g:60,min:30,max:100},{a:"olio",g:10,min:6,max:14}]},
+  {id:"n3", slot:"cena", nome:"Pollo alla piastra e verdure grigliate", ctx:["casa","ristorante"],
+   voci:[{a:"pollo",g:180,min:130,max:250},{a:"verdure_grigl",g:200,min:120,max:280},{a:"pane_int",g:50,min:0,max:90},{a:"olio",g:8,min:5,max:14}]},
+  {id:"n4", slot:"cena", nome:"Zuppa di legumi e crostini", ctx:["casa","ristorante"],
+   voci:[{a:"lenticchie",g:220,min:150,max:320},{a:"minestrone",g:250,min:150,max:350},{a:"pane_int",g:50,min:20,max:90},{a:"olio",g:10,min:6,max:16}]},
+  {id:"n5", slot:"cena", nome:"Salmone, insalata e riso", ctx:["casa","ristorante"],
+   voci:[{a:"salmone",g:150,min:100,max:220},{a:"riso_int",g:70,min:40,max:110},{a:"insalata",g:150,min:80,max:220},{a:"olio",g:8,min:5,max:14}]},
+  {id:"n6", slot:"cena", nome:"Tofu saltato, verdure e riso", ctx:["casa"],
+   voci:[{a:"tofu",g:180,min:120,max:250},{a:"riso_int",g:70,min:45,max:110},{a:"peperoni",g:200,min:120,max:280},{a:"olio",g:10,min:6,max:16}]},
+  {id:"n7", slot:"cena", nome:"Cena di lavoro: antipasto, secondo, due bicchieri", ctx:["lavoro","ristorante"],
+   voci:[{a:"insalata_mare",g:120,min:80,max:180},{a:"tagliata",g:200,min:140,max:280},{a:"verdure_grigl",g:150,min:80,max:220},{a:"pane",g:50,min:30,max:90},{a:"vino_rosso",g:250,min:125,max:375}],
+   nota:"Se il cliente ordina, tu scegli come stare dentro: verdura al posto delle patate e ti fermi a due bicchieri."},
+  {id:"n8", slot:"cena", nome:"Caprese, bruschette e verdura", ctx:["casa","ristorante"],
+   voci:[{a:"caprese",g:200,min:120,max:280},{a:"bruschetta",g:100,min:50,max:180},{a:"insalata",g:120,min:60,max:200}]},
+  {id:"n9", slot:"cena", nome:"Cena leggera di rientro: minestrone e uovo", ctx:["casa"],
+   voci:[{a:"minestrone",g:350,min:250,max:450},{a:"uovo",g:110,min:55,max:165},{a:"pane_int",g:30,min:0,max:60},{a:"olio",g:6,min:4,max:10}],
+   compensativa:true,
+   nota:"Piatto di rientro: molto volume, poche calorie. Ti sazia senza pesare sul saldo."},
+  {id:"n10", slot:"cena", nome:"Cena di rientro: pesce bianco e verdura abbondante", ctx:["casa","ristorante"],
+   voci:[{a:"merluzzo",g:220,min:150,max:300},{a:"broccoli",g:250,min:150,max:350},{a:"patate",g:120,min:0,max:200},{a:"olio",g:8,min:5,max:12}],
+   compensativa:true}
+];
+
+/* Tag e regime della proposta derivati dagli alimenti: una sola verità. */
+PROPOSTE.forEach(function(pr){
+  const tag = new Set();
+  pr.voci.forEach(function(v){ ALIMENTI[v.a].tag.forEach(function(t){ tag.add(t); }); });
+  pr.tag = tag;
+  pr.regime = tag.has("carne") ? "onnivoro" : tag.has("pesce") ? "pesce"
+            : (tag.has("lattosio") || tag.has("uova")) ? "vegetariano" : "vegano";
+});
+
+/* ---------------- 5. Referto: cosa leggo e in che intervallo ---------------- */
+const ANALITI = [
+  {id:"col_tot", nome:"Colesterolo totale", unita:"mg/dL", min:0, max:200, verso:-1, dec:0},
+  {id:"ldl", nome:"Colesterolo LDL", unita:"mg/dL", min:0, max:115, verso:-1, dec:0},
+  {id:"hdl", nome:"Colesterolo HDL", unita:"mg/dL", min:45, max:100, verso:1, dec:0},
+  {id:"tg", nome:"Trigliceridi", unita:"mg/dL", min:0, max:150, verso:-1, dec:0},
+  {id:"glicemia", nome:"Glicemia", unita:"mg/dL", min:70, max:99, verso:-1, dec:0},
+  {id:"hba1c", nome:"Emoglobina glicata", unita:"%", min:4, max:5.6, verso:-1, dec:2},
+  {id:"gpt", nome:"Transaminasi ALT", unita:"U/L", min:0, max:41, verso:-1, dec:0},
+  {id:"ggt", nome:"Gamma GT", unita:"U/L", min:0, max:60, verso:-1, dec:0},
+  {id:"uricemia", nome:"Acido urico", unita:"mg/dL", min:3.5, max:7, verso:-1, dec:1},
+  {id:"creatinina", nome:"Creatinina", unita:"mg/dL", min:0.7, max:1.2, verso:0, dec:2},
+  {id:"vitd", nome:"Vitamina D", unita:"ng/mL", min:30, max:100, verso:1, dec:0},
+  {id:"ferritina", nome:"Ferritina", unita:"ng/mL", min:30, max:300, verso:0, dec:0}
+];
+
+const ESCLUSIONI = [
+  {id:"glutine", nome:"Glutine"}, {id:"lattosio", nome:"Lattosio"},
+  {id:"uova", nome:"Uova"}, {id:"guscio", nome:"Frutta a guscio"},
+  {id:"pesce", nome:"Pesce"}, {id:"carne", nome:"Carne rossa"}
+];
+
+const SLOT = [
+  {id:"colazione", nome:"Colazione", ora:"07:30", quota:0.22},
+  {id:"spuntino", nome:"Spuntino", ora:"10:30", quota:0.07},
+  {id:"pranzo", nome:"Pranzo", ora:"13:00", quota:0.33},
+  {id:"merenda", nome:"Merenda", ora:"16:30", quota:0.08},
+  {id:"cena", nome:"Cena", ora:"20:00", quota:0.30}
+];
+</script>
+
+<script>
+"use strict";
+/* ================================================================
+   MOTORE — stato, energia, banca settimanale, compensazione
+   ================================================================ */
+const CHIAVE = "lifediet.v1";
+const G_PER_KG = 7700;          // kcal per kg di massa grassa
+const FLOOR = {m:1500, f:1200}; // sotto questa soglia non scendo mai
+
+let S = null;            // stato applicativo
+let giorno = isoOggi();  // giorno visualizzato
+
+function isoOggi(){ return isoData(new Date()); }
+function isoData(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function daIso(s){ const p=s.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+function piuGiorni(iso, n){ const d=daIso(iso); d.setDate(d.getDate()+n); return isoData(d); }
+function giorniTra(a,b){ return Math.round((daIso(b)-daIso(a))/86400000); }
+function arr(n,d){ const f=Math.pow(10,d||0); return Math.round(n*f)/f; }
+function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+function num(v, d){
+  if(v == null || isNaN(v)) return "—";
+  return Number(v).toLocaleString("it-IT", {minimumFractionDigits:d||0, maximumFractionDigits:d||0});
+}
+
+/* ---------------- stato ---------------- */
+function statoVuoto(){
+  return {
+    versione:1, esempio:false,
+    profilo:{nome:"", sesso:"m", eta:45, altezza:175, peso:80, pesoObiettivo:75,
+             laf:1.375, obiettivo:"perdere", settimane:16, giorniRientro:3,
+             regime:"onnivoro", esclusioni:[]},
+    giorni:{}, pesi:[], misure:[], esami:[], impostazioni:{tema:"auto"}
+  };
+}
+function giornoVuoto(iso){
+  return {data:iso, contesto:"casa", pasti:{colazione:[],spuntino:[],pranzo:[],merenda:[],cena:[]},
+          saltati:[], attivita:[], eventi:[], acqua:0, chiuso:false, nota:""};
+}
+function G(iso){
+  iso = iso || giorno;
+  if(!S.giorni[iso]) S.giorni[iso] = giornoVuoto(iso);
+  return S.giorni[iso];
+}
+function salva(){ try{ localStorage.setItem(CHIAVE, JSON.stringify(S)); }catch(e){ console.warn("Memoria piena o non disponibile", e); } }
+function carica(){
+  try{ const t = localStorage.getItem(CHIAVE); if(t) return JSON.parse(t); }catch(e){}
+  return null;
+}
+
+/* ---------------- energia ---------------- */
+function metabolismoBase(){
+  const p = S.profilo;
+  return Math.round(10*p.peso + 6.25*p.altezza - 5*p.eta + (p.sesso === "m" ? 5 : -161));
+}
+function fabbisogno(){ return Math.round(metabolismoBase() * S.profilo.laf); }
+
+/* Ritmo: quanto posso togliere al giorno per arrivare all'obiettivo nel tempo
+   chiesto, senza scendere sotto le soglie di sicurezza. */
+function ritmo(){
+  const p = S.profilo, td = fabbisogno();
+  const deltaKg = p.peso - p.pesoObiettivo;
+  const sett = Math.max(1, p.settimane || 1);
+  if(p.obiettivo === "mantenere" || Math.abs(deltaKg) < 0.3)
+    return {kcalGiorno:0, kgSett:0, sostenibile:true, target:td};
+  const kgSettRichiesto = deltaKg / sett;
+  const kgSettMax = 0.0075 * p.peso;                 // ~0,75% del peso a settimana
+  const kgSett = clamp(kgSettRichiesto, -kgSettMax*0.6, kgSettMax);
+  const delta = -(kgSett * G_PER_KG / 7);
+  const floor = FLOOR[p.sesso];
+  const target = Math.max(floor, Math.round(td + delta));
+  const settMin = Math.ceil(Math.abs(deltaKg) / kgSettMax);
+  return {
+    kcalGiorno: target - td, kgSett: arr(kgSett,2), target: target,
+    sostenibile: Math.abs(kgSettRichiesto) <= kgSettMax + 0.001 && target > floor,
+    settimaneMinime: settMin, deltaKg: arr(deltaKg,1)
+  };
+}
+function targetKcal(){ return ritmo().target; }
+
+function pesoRiferimento(){
+  const p = S.profilo;
+  const idealeBmi24 = 24 * Math.pow(p.altezza/100, 2);
+  return Math.min(p.peso, Math.max(idealeBmi24, p.pesoObiettivo));
+}
+function macroTarget(kcal){
+  const p = S.profilo, rif = pesoRiferimento();
+  const gProt = (p.obiettivo === "aumentare" ? 1.9 : p.obiettivo === "perdere" ? 1.8 : 1.5) * rif;
+  const kcalProt = gProt * 4;
+  const gGras = Math.max(0.7*rif, kcal*0.27/9);
+  const kcalGras = gGras * 9;
+  const gCarb = Math.max(60, (kcal - kcalProt - kcalGras) / 4);
+  return {
+    kcal: kcal, p: Math.round(gProt), c: Math.round(gCarb), g: Math.round(gGras),
+    fib: Math.round(kcal/1000*14), sat: Math.round(kcal*0.07/9),
+    zuc: Math.round(kcal*0.10/4), sod: 2000, alc: p.sesso === "m" ? 10 : 5
+  };
+}
+
+/* ---------------- somme di giornata ---------------- */
+const VUOTO = {kcal:0,p:0,c:0,g:0,sat:0,fib:0,zuc:0,sod:0,alc:0};
+function somma(voci){
+  const t = Object.assign({}, VUOTO);
+  (voci||[]).forEach(function(v){ for(const k in t) t[k] += v[k] || 0; });
+  for(const k in t) t[k] = arr(t[k], 1);
+  return t;
+}
+function vociGiorno(iso){
+  const g = G(iso), out = [];
+  SLOT.forEach(function(s){ (g.pasti[s.id]||[]).forEach(function(v){ out.push(v); }); });
+  return out;
+}
+function totaleGiorno(iso){ return somma(vociGiorno(iso)); }
+
+function kcalAttivita(iso, quali){
+  const g = G(iso), peso = S.profilo.peso;
+  let k = 0;
+  (g.attivita||[]).forEach(function(a){
+    const met = (ATTIVITA.find(function(x){return x.id===a.tipo;})||{met:4}).met;
+    const min = quali === "previste" ? a.previsti : (a.fatti != null ? a.fatti : 0);
+    k += met * peso * (min/60);
+  });
+  return Math.round(k * 0.7);   // solo il di più rispetto al movimento già nel fabbisogno
+}
+
+/* ---------------- la banca settimanale ----------------
+   Il conto corrente delle calorie: un giorno sopra non è un fallimento,
+   è un debito che si restituisce nei giorni scelti dall'utente. */
+function banca(isoRif){
+  const fine = piuGiorni(isoRif, -1);
+  let saldo = 0, giorniContati = 0;
+  const tgt = targetKcal();
+  for(let i=0;i<7;i++){
+    const d = piuGiorni(fine, -i);
+    const gg = S.giorni[d];
+    if(!gg) continue;
+    const voci = vociGiorno(d);
+    if(!voci.length) continue;
+    const consumato = somma(voci).kcal;
+    const budgetQuelGiorno = tgt + kcalAttivita(d, "fatte");
+    saldo += consumato - budgetQuelGiorno;
+    giorniContati++;
+  }
+  const settimanale = tgt * 7;
+  const perc = settimanale ? saldo / settimanale : 0;
+  let stato, titolo, colore;
+  if(giorniContati === 0){ stato="nuovo"; titolo="Si comincia"; colore="neutro"; }
+  else if(perc > 0.09){ stato="rientro"; titolo="Giornata di rientro"; colore="rosso"; }
+  else if(perc > 0.03){ stato="recupero"; titolo="Recupero leggero"; colore="ambra"; }
+  else if(perc < -0.09){ stato="sotto"; titolo="Stai mangiando poco"; colore="ambra"; }
+  else { stato="linea"; titolo="In linea"; colore="verde"; }
+  return {saldo:Math.round(saldo), perc:perc, stato:stato, titolo:titolo, colore:colore, giorni:giorniContati};
+}
+
+/* Quanto di quel debito restituisco oggi, senza mai scendere sotto il floor. */
+function quotaRientro(isoRif){
+  const b = banca(isoRif);
+  if(b.saldo <= 0) return 0;
+  const giorni = S.profilo.giorniRientro || 3;
+  const tgt = targetKcal();
+  return Math.round(clamp(b.saldo / giorni, 0, tgt * 0.20));
+}
+
+/* Il budget di oggi: obiettivo, più il movimento in più, meno la quota di rientro. */
+function budgetOggi(iso){
+  iso = iso || giorno;
+  const tgt = targetKcal();
+  const extra = kcalAttivita(iso, "previste");
+  const rientro = quotaRientro(iso);
+  const floor = FLOOR[S.profilo.sesso];
+  const grezzo = tgt + extra - rientro;
+  return {
+    valore: Math.round(clamp(grezzo, floor, tgt * 1.4)),
+    base: tgt, extra: extra, rientro: rientro,
+    tagliato: grezzo < floor
+  };
+}
+
+/* ---------------- distribuzione sui pasti ----------------
+   Le calorie non sono spalmate in modo fisso: vanno dove sta la vita.
+   Un evento in agenda si prende la sua fetta prima che accada. */
+function pianoGiornata(iso){
+  iso = iso || giorno;
+  const g = G(iso), budget = budgetOggi(iso).valore;
+  const consumato = totaleGiorno(iso).kcal;
+  const piano = {};
+  const rimasti = SLOT.filter(function(s){
+    return !(g.pasti[s.id] && g.pasti[s.id].length) && g.saltati.indexOf(s.id) < 0;
+  });
+  let disponibile = Math.max(0, budget - consumato);
+
+  // Gli eventi in agenda si prenotano la loro quota, maggiorata.
+  const prenotati = {};
+  (g.eventi||[]).forEach(function(ev){
+    const slot = SLOT.find(function(s){return s.id === ev.slot;});
+    if(!slot || rimasti.indexOf(slot) < 0) return;
+    prenotati[ev.slot] = Math.round(budget * Math.min(0.55, slot.quota * 1.55));
+  });
+  let quotaPrenotata = 0;
+  for(const k in prenotati) quotaPrenotata += prenotati[k];
+  quotaPrenotata = Math.min(quotaPrenotata, disponibile * 0.8);
+
+  const liberi = rimasti.filter(function(s){ return !prenotati[s.id]; });
+  const sommaQuote = liberi.reduce(function(a,s){ return a + s.quota; }, 0) || 1;
+  const daDistribuire = Math.max(0, disponibile - quotaPrenotata);
+
+  SLOT.forEach(function(s){
+    if(prenotati[s.id]) piano[s.id] = Math.round(prenotati[s.id] * (quotaPrenotata / (Object.keys(prenotati).reduce(function(a,k){return a+prenotati[k];},0) || 1)));
+    else if(liberi.indexOf(s) >= 0) piano[s.id] = Math.round(daDistribuire * s.quota / sommaQuote);
+    else piano[s.id] = 0;
+  });
+  return {piano:piano, budget:budget, consumato:Math.round(consumato), disponibile:Math.round(disponibile)};
+}
+
+/* ---------------- proposte adattate ---------------- */
+function scalaProposta(pr, kcalTarget){
+  const base = pr.voci.reduce(function(a,v){ return a + ALIMENTI[v.a].kcal * v.g / 100; }, 0);
+  let f = base > 0 ? kcalTarget / base : 1;
+  f = clamp(f, 0.45, 2.2);
+  const voci = pr.voci.map(function(v){
+    const al = ALIMENTI[v.a];
+    let g = clamp(v.g * f, v.min, v.max);
+    g = al.pezzo && al.pezzo <= 60 ? Math.round(g / al.pezzo) * al.pezzo : Math.round(g / 5) * 5;
+    return vocePasto(al, Math.max(g, v.min ? Math.min(v.min, g) : g));
+  }).filter(function(v){ return v.grammi > 0; });
+  const tot = somma(voci);
+  return {proposta:pr, voci:voci, tot:tot, scarto:Math.abs(tot.kcal - kcalTarget)};
+}
+
+function vocePasto(al, grammi){
+  const k = grammi / 100;
+  return {alimento:al.id, nome:al.nome, grammi:Math.round(grammi),
+    kcal:arr(al.kcal*k,0), p:arr(al.p*k,1), c:arr(al.c*k,1), g:arr(al.g*k,1),
+    sat:arr(al.sat*k,1), fib:arr(al.fib*k,1), zuc:arr(al.zuc*k,1), sod:arr(al.sod*k,0), alc:arr(al.alc*k,1)};
+}
+
+function ammessa(pr){
+  const p = S.profilo;
+  const ordine = {vegano:0, vegetariano:1, pesce:2, onnivoro:3};
+  if(ordine[pr.regime] > ordine[p.regime]) return false;
+  if(p.regime === "pesce" && pr.tag.has("carne")) return false;
+  for(let i=0;i<p.esclusioni.length;i++) if(pr.tag.has(p.esclusioni[i])) return false;
+  return true;
+}
+
+function proponi(slotId, kcalTarget, contesto, isoRif, quante){
+  const b = banca(isoRif || giorno);
+  const recenti = new Set();
+  for(let i=1;i<=3;i++){
+    const gg = S.giorni[piuGiorni(isoRif||giorno, -i)];
+    if(gg && gg.usate) gg.usate.forEach(function(x){ recenti.add(x); });
+  }
+  const mt = macroTarget(budgetOggi(isoRif).valore);
+  const cand = PROPOSTE.filter(function(pr){ return pr.slot === slotId && ammessa(pr); }).map(function(pr){
+    const s = scalaProposta(pr, kcalTarget || 400);
+    let punti = s.scarto / Math.max(80, kcalTarget||400);
+    if(pr.ctx.indexOf(contesto) < 0) punti += 0.9;
+    if(recenti.has(pr.id)) punti += 0.7;
+    // preferisco proteine alte quando devo rientrare: saziano e proteggono la massa magra
+    const quotaProt = s.tot.kcal ? (s.tot.p*4)/s.tot.kcal : 0;
+    punti -= quotaProt * 0.8;
+    if(b.stato === "rientro"){
+      if(pr.compensativa) punti -= 1.1;
+      punti += (s.tot.sat / Math.max(1, mt.sat)) * 0.5;
+    }
+    if(b.stato === "sotto" && pr.compensativa) punti += 0.6;
+    return Object.assign(s, {punti:punti});
+  });
+  cand.sort(function(a,b2){ return a.punti - b2.punti; });
+  return cand.slice(0, quante || 3);
+}
+
+/* ---------------- composizione corporea ---------------- */
+function bmi(){ const p = S.profilo; return arr(p.peso / Math.pow(p.altezza/100,2), 1); }
+function massaGrassa(m){
+  if(!m) return null;
+  const p = S.profilo, h = p.altezza;
+  let bf;
+  if(p.sesso === "m"){
+    if(!m.vita || !m.collo) return null;
+    bf = 495 / (1.0324 - 0.19077*Math.log10(m.vita - m.collo) + 0.15456*Math.log10(h)) - 450;
+  } else {
+    if(!m.vita || !m.collo || !m.fianchi) return null;
+    bf = 495 / (1.29579 - 0.35004*Math.log10(m.vita + m.fianchi - m.collo) + 0.22100*Math.log10(h)) - 450;
+  }
+  if(!isFinite(bf) || bf <= 0 || bf > 70) return null;
+  return arr(bf, 1);
+}
+
+/* ---------------- medie alimentari su finestra ---------------- */
+function mediaPeriodo(giorniIndietro, isoRif){
+  const fine = isoRif || giorno;
+  let n = 0; const t = Object.assign({}, VUOTO); let verdura = 0, pesceG = 0, minAtt = 0;
+  for(let i=0;i<giorniIndietro;i++){
+    const d = piuGiorni(fine, -i), gg = S.giorni[d];
+    if(!gg) continue;
+    const voci = vociGiorno(d);
+    if(!voci.length) continue;
+    n++;
+    const s = somma(voci);
+    for(const k in t) t[k] += s[k];
+    voci.forEach(function(v){
+      const al = ALIMENTI[v.alimento];
+      if(!al) return;
+      if(al.cat === "verdura") verdura += v.grammi;
+      if(al.tag.indexOf("omega3") >= 0) pesceG += v.grammi;
+    });
+    (gg.attivita||[]).forEach(function(a){ minAtt += (a.fatti != null ? a.fatti : 0); });
+  }
+  if(!n) return null;
+  const m = {};
+  for(const k in t) m[k] = arr(t[k]/n, 1);
+  m.giorni = n; m.verdura = Math.round(verdura/n); m.omega3 = Math.round(pesceG/n); m.minAttivita = Math.round(minAtt/n);
+  return m;
+}
+
+/* ---------------- proiezione dei valori del sangue ----------------
+   Modello di TENDENZA, non un referto. Usa relazioni note fra grassi saturi,
+   fibra, zuccheri, alcol, peso e attività, con un'incertezza dichiarata
+   larga: serve a dire se la rotta è giusta, non a fare diagnosi. */
+function proiezione(){
+  const ultimo = S.esami[S.esami.length-1];
+  if(!ultimo) return null;
+  const m = mediaPeriodo(21);
+  if(!m || m.giorni < 3) return {insufficiente:true, giorni: m ? m.giorni : 0, base:ultimo};
+
+  const mt = macroTarget(targetKcal());
+  const dSat = m.sat - mt.sat;                 // g/giorno oltre la soglia
+  const dFib = m.fib - 25;
+  const dZuc = m.zuc - 55;
+  const alc  = m.alc;
+  const att  = m.minAttivita;
+  // variazione di peso dal prelievo a oggi
+  const pesiDopo = S.pesi.filter(function(x){ return x.data >= ultimo.data; }).sort(function(a,b){ return a.data < b.data ? -1 : 1; });
+  const dPeso = pesiDopo.length >= 2 ? arr(pesiDopo[pesiDopo.length-1].kg - pesiDopo[0].kg, 1) : 0;
+  const persi = Math.max(0, -dPeso);
+
+  const f = {
+    ldl:      1.6*dSat - 0.35*Math.max(0,dFib) - 1.1*persi,
+    col_tot:  1.8*dSat - 0.40*Math.max(0,dFib) - 1.3*persi,
+    hdl:      0.9*persi + 0.020*att - 0.02*Math.max(0,dZuc),
+    tg:       1.9*alc + 0.55*Math.max(0,dZuc) - 4.2*persi - 0.06*att,
+    glicemia: -1.1*persi + 0.05*Math.max(0,dZuc) - 0.015*att,
+    hba1c:    -0.035*persi + 0.0035*Math.max(0,dZuc) - 0.0006*att,
+    ggt:      0.85*alc - 0.8*persi,
+    gpt:      0.45*alc - 0.9*persi,
+    uricemia: 0.028*alc + 0.006*Math.max(0,dZuc) - 0.05*persi
+  };
+  const confidenza = m.giorni >= 14 ? "buona" : m.giorni >= 7 ? "parziale" : "bassa";
+  const righe = [];
+  ANALITI.forEach(function(a){
+    const base = ultimo.valori[a.id];
+    if(base == null || f[a.id] == null) return;
+    const grezzo = f[a.id];
+    const d = a.dec || 0;
+    const incert = Math.max(Math.abs(grezzo) * 0.5, Math.abs(base) * 0.04, d ? Math.pow(10,-d) : 1);
+    righe.push({analita:a, base:base, delta:arr(grezzo, d), grezzo:grezzo,
+                stima:arr(base+grezzo, d), incert:arr(incert, d)});
+  });
+  return {righe:righe, confidenza:confidenza, giorni:m.giorni, media:m, dPeso:dPeso, base:ultimo};
+}
+</script>
+
+<script>
+"use strict";
+/* ================================================================
+   INTERFACCIA — vista Oggi
+   ================================================================ */
+const q = function(s,r){ return (r||document).querySelector(s); };
+const qa = function(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function nGiorno(iso){
+  const d = daIso(iso);
+  return d.toLocaleDateString("it-IT", {weekday:"long", day:"numeric", month:"long"});
+}
+let vistaAttiva = "oggi";
+let indiceProposta = {};   // slot -> quale proposta sto mostrando
+
+function pillolaSemaforo(b, grande){
+  const cls = {verde:"st-verde", ambra:"st-ambra", rosso:"st-rosso", neutro:"st-neutro"}[b.colore];
+  return '<span class="semaforo '+cls+'" style="'+(grande?"font-size:13px;padding:7px 14px 7px 11px":"")+'">'+
+         '<i class="luce"></i>'+esc(b.titolo)+'</span>';
+}
+
+/* Il testo che l'app ti dice al mattino: deve suonare come una persona
+   che ha visto cosa è successo ieri, non come un contatore. */
+function fraseCoach(iso){
+  const b = banca(iso), bu = budgetOggi(iso), g = G(iso);
+  const pg = pianoGiornata(iso);
+  const ev = (g.eventi||[])[0];
+  const att = (g.attivita||[]).filter(function(a){ return a.previsti > 0 && a.fatti == null; })[0];
+  const frasi = [];
+
+  if(b.stato === "nuovo"){
+    frasi.push("Prima giornata: mangia normale e registra. Con due o tre giorni capisco il tuo passo e comincio ad adattarmi.");
+  } else if(b.stato === "rientro"){
+    frasi.push("Gli ultimi giorni sono andati oltre di <b>"+b.saldo+" kcal</b>. Non ti chiedo di digiunare: "+
+      "restituisci <b>"+bu.rientro+" kcal</b> al giorno per "+S.profilo.giorniRientro+" giorni e il conto torna a posto.");
+  } else if(b.stato === "recupero"){
+    frasi.push("Sei avanti di <b>"+b.saldo+" kcal</b> sulla settimana: poco, si riassorbe con <b>"+bu.rientro+" kcal</b> in meno oggi. Niente di drammatico.");
+  } else if(b.stato === "sotto"){
+    frasi.push("Stai mangiando <b>"+Math.abs(b.saldo)+" kcal</b> sotto il piano. Le diete si mollano più per fame che per golosità: oggi mangia il tuo budget pieno.");
+  } else {
+    frasi.push("Settimana in linea. Oggi hai <b>"+bu.valore+" kcal</b> da spendere come preferisci.");
+  }
+
+  if(ev){
+    frasi.push("Hai in agenda <b>"+esc(ev.nota || ev.tipo)+"</b> a "+
+      (SLOT.find(function(s){return s.id===ev.slot;})||{nome:"cena"}).nome.toLowerCase()+
+      ": ho spostato <b>"+pg.piano[ev.slot]+" kcal</b> su quel pasto e alleggerito il resto. Vai tranquillo.");
+  }
+  if(att){
+    const a = ATTIVITA.find(function(x){return x.id===att.tipo;});
+    frasi.push("Hai in programma "+esc(a?a.nome.toLowerCase():"movimento")+" per "+att.previsti+" minuti: valgono circa <b>"+
+      Math.round((a?a.met:4)*S.profilo.peso*(att.previsti/60)*0.7)+" kcal</b>, che ti ho già aggiunto. Se poi non li fai, li tolgo domani.");
+  }
+  if(bu.tagliato){
+    frasi.push("Il rientro pieno ti porterebbe sotto la soglia di sicurezza: l'ho fermato lì e spalmo il resto sui prossimi giorni.");
+  }
+  return frasi.join(" ");
+}
+
+function disegnaAnello(consumato, budget){
+  const r = 50, circ = 2*Math.PI*r;
+  const perc = budget ? clamp(consumato/budget, 0, 1) : 0;
+  const arco = q("#anello-arco");
+  arco.setAttribute("stroke-dasharray", (perc*circ).toFixed(1)+" "+circ.toFixed(1));
+  arco.setAttribute("stroke-linecap", perc > 0.005 ? "round" : "butt");
+  const sopra = budget && consumato > budget;
+  arco.setAttribute("stroke", sopra ? "var(--rosso)" : consumato/budget > 0.85 ? "var(--ambra)" : "var(--accento)");
+  q("#anello-num").textContent = Math.round(consumato);
+  q("#anello-tot").textContent = Math.round(budget);
+}
+
+function barraMacro(nome, val, tgt, unita){
+  const perc = tgt ? clamp(val/tgt, 0, 1.35)*100 : 0;
+  const cls = !tgt ? "" : val > tgt*1.12 ? "eccesso" : val > tgt*0.92 ? "ok" : "";
+  return '<div class="macro-riga"><span class="nome">'+esc(nome)+'</span>'+
+    '<span class="val">'+arr(val,0)+' / '+arr(tgt,0)+' '+unita+'</span>'+
+    '<span class="barra"><i class="'+cls+'" style="width:'+Math.min(100,perc)+'%"></i></span></div>';
+}
+
+function renderOggi(){
+  const iso = giorno, g = G(iso);
+  const b = banca(iso), bu = budgetOggi(iso), pg = pianoGiornata(iso);
+  const tot = totaleGiorno(iso), mt = macroTarget(bu.valore);
+
+  q("#data-lunga").textContent = nGiorno(iso);
+  const diff = giorniTra(isoOggi(), iso);
+  q("#etichetta-giorno").textContent = diff === 0 ? "oggi" : diff === -1 ? "ieri" : diff === 1 ? "domani" : "";
+  q("#giorno-succ").disabled = diff >= 1;
+  q("#semaforo-testata").innerHTML = pillolaSemaforo(b, true);
+  q("#frase-coach").innerHTML = fraseCoach(iso);
+  q("#dettaglio-banca").innerHTML =
+    "obiettivo "+bu.base+" · movimento +"+bu.extra+" · rientro −"+bu.rientro+" &nbsp;→&nbsp; <b>budget "+bu.valore+" kcal</b>";
+
+  disegnaAnello(tot.kcal, bu.valore);
+  q("#macro-barre").innerHTML =
+    barraMacro("Proteine", tot.p, mt.p, "g") +
+    barraMacro("Carboidrati", tot.c, mt.c, "g") +
+    barraMacro("Grassi", tot.g, mt.g, "g") +
+    barraMacro("Fibra", tot.fib, mt.fib, "g");
+  q("#conta-acqua").textContent = g.acqua || 0;
+
+  // ---- timeline
+  const oraOra = new Date().getHours()*60 + new Date().getMinutes();
+  let html = "";
+  SLOT.forEach(function(s){
+    const voci = g.pasti[s.id] || [], saltato = g.saltati.indexOf(s.id) >= 0;
+    const t = somma(voci);
+    const oraMin = +s.ora.split(":")[0]*60 + +s.ora.split(":")[1];
+    const prossimo = !voci.length && !saltato && SLOT.filter(function(x){
+      return !(g.pasti[x.id]||[]).length && g.saltati.indexOf(x.id)<0; })[0] === s;
+    const variante = voci.some(function(v){ return v.aderenza && v.aderenza !== "piena"; });
+    let cls = "slot";
+    if(voci.length) cls += variante ? " adattato" : " fatto";
+    if(saltato) cls += " saltato";
+    if(diff === 0 && Math.abs(oraMin - oraOra) < 90) cls += " ora-corrente";
+
+    html += '<div class="'+cls+'" data-slot="'+s.id+'">';
+    html += '<div class="slot-ora"><div class="punto"></div><div class="h">'+s.ora+'</div></div>';
+    html += '<div class="slot-corpo"><div class="slot-testa"><span class="slot-nome">'+s.nome+'</span>';
+    if(voci.length) html += '<span class="slot-quota mono">'+Math.round(t.kcal)+' kcal</span>';
+    else if(saltato) html += '<span class="slot-quota">saltato</span>';
+    else html += '<span class="slot-quota mono">'+pg.piano[s.id]+' kcal previste</span>';
+    html += '</div>';
+
+    if(voci.length){
+      voci.forEach(function(v,i){
+        const tagAd = v.aderenza === "variante" ? '<span class="tag-aderenza ad-variante">variante</span>'
+                    : v.aderenza === "fuori" ? '<span class="tag-aderenza ad-fuori">fuori piano</span>' : '';
+        html += '<div class="voce"><span>'+esc(v.nome)+'</span><span class="g">'+v.grammi+' g</span>'+tagAd+
+                '<span class="kc">'+Math.round(v.kcal)+'</span>'+
+                '<button data-rimuovi="'+s.id+':'+i+'" aria-label="Togli '+esc(v.nome)+'">✕</button></div>';
+      });
+      html += '<div class="proposta__azioni azioni" style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap">'+
+              '<button class="btn piccolo" data-aggiungi="'+s.id+'">Aggiungi</button></div>';
+    } else if(saltato){
+      html += '<p class="sottile">Saltato. Le calorie sono tornate nel budget degli altri pasti.</p>'+
+              '<button class="btn piccolo" style="margin-top:8px" data-ripristina="'+s.id+'">Annulla</button>';
+    } else {
+      const idx = indiceProposta[s.id] || 0;
+      const lista = proponi(s.id, pg.piano[s.id], g.contesto, iso, 4);
+      const scelta = lista[idx % Math.max(1,lista.length)];
+      if(scelta){
+        const pr = scelta.proposta;
+        html += '<div class="proposta'+(prossimo?" scelta":"")+'">';
+        html += '<h4>'+esc(pr.nome)+'</h4>';
+        html += '<div class="dettaglio">'+scelta.voci.map(function(v){ return esc(v.nome)+' '+v.grammi+' g'; }).join(" · ")+'</div>';
+        html += '<div class="numeri">'+
+                '<span>'+Math.round(scelta.tot.kcal)+' kcal</span>'+
+                '<span>P '+arr(scelta.tot.p,0)+' g</span><span>C '+arr(scelta.tot.c,0)+' g</span><span>G '+arr(scelta.tot.g,0)+' g</span></div>';
+        if(pr.nota) html += '<p class="sottile" style="margin-top:8px">'+esc(pr.nota)+'</p>';
+        html += '<div class="azioni">'+
+          '<button class="btn piccolo primario" data-accetta="'+s.id+'">Mangio questo</button>'+
+          '<button class="btn piccolo" data-altra="'+s.id+'">Un\'altra</button>'+
+          '<button class="btn piccolo" data-variante="'+s.id+'">Ho mangiato altro</button>'+
+          '<button class="btn piccolo testo" data-salta="'+s.id+'">Salto</button>'+
+          '</div></div>';
+      } else {
+        html += '<p class="sottile">Nessuna proposta compatibile con le tue esclusioni per questo pasto.</p>'+
+                '<button class="btn piccolo" style="margin-top:8px" data-aggiungi="'+s.id+'">Registro a mano</button>';
+      }
+    }
+    html += '</div></div>';
+  });
+  q("#timeline").innerHTML = html;
+  renderBilancio(iso);
+}
+
+/* ---- bilancio: cosa è cambiato oggi rispetto alle tue ultime due settimane ---- */
+function renderBilancio(iso){
+  const tot = totaleGiorno(iso), bu = budgetOggi(iso), mt = macroTarget(bu.valore);
+  const voci = vociGiorno(iso);
+  const box = q("#bilancio-corpo");
+  q("#btn-chiudi-giornata").textContent = G(iso).chiuso ? "Riapri" : "Chiudi";
+  if(!voci.length){ box.innerHTML = '<p class="sottile">Ancora niente registrato per questa giornata.</p>'; return; }
+
+  const prec = mediaPeriodo(14, piuGiorni(iso,-1));
+  const delta = tot.kcal - bu.valore;
+  let html = '<div class="riga-tra"><span>Energia</span><span class="mono"><b>'+Math.round(tot.kcal)+'</b> / '+bu.valore+' kcal</span></div>';
+  html += '<div class="nota'+(Math.abs(delta) > bu.valore*0.12 ? " attenzione" : "")+'" style="margin-top:8px">'+
+    (delta > 0 ? "Sei sopra di "+Math.round(delta)+" kcal. Finiscono in banca e le restituisci nei prossimi "+S.profilo.giorniRientro+" giorni: nessun dramma."
+     : delta < -bu.valore*0.15 ? "Sei sotto di "+Math.round(-delta)+" kcal. Va bene una volta, ma se si ripete rallento l'obiettivo: la fame fa mollare."
+     : "Giornata dentro il budget.")+'</div>';
+
+  const confronti = [
+    {k:"sat", nome:"Grassi saturi", u:"g", verso:-1, tgt:mt.sat},
+    {k:"fib", nome:"Fibra", u:"g", verso:1, tgt:mt.fib},
+    {k:"zuc", nome:"Zuccheri", u:"g", verso:-1, tgt:mt.zuc},
+    {k:"alc", nome:"Alcol", u:"g", verso:-1, tgt:mt.alc},
+    {k:"sod", nome:"Sodio", u:"mg", verso:-1, tgt:mt.sod}
+  ];
+  html += '<div class="etichetta" style="margin-top:14px">Su cosa hai agito</div><div class="avvolgi"><table class="dati" style="margin-top:6px"><thead><tr>'+
+          '<th>Leva</th><th style="text-align:right">Oggi</th><th style="text-align:right">Media 14 gg</th><th style="text-align:right">Effetto</th></tr></thead><tbody>';
+  confronti.forEach(function(c){
+    const oggi = tot[c.k], media = prec ? prec[c.k] : null;
+    let effetto = '<span class="sottile">—</span>';
+    if(media != null){
+      const d = oggi - media;
+      const buono = c.verso * d < 0 ? false : true;
+      const migliora = (c.verso === -1 && d < -0.5) || (c.verso === 1 && d > 0.5);
+      const peggiora = (c.verso === -1 && d > 0.5) || (c.verso === 1 && d < -0.5);
+      effetto = migliora ? '<span class="freccia-giu">↓ meglio</span>' : peggiora ? '<span class="freccia-su">↑ peggio</span>' : '<span class="sottile">stabile</span>';
+      if(c.verso === 1 && migliora) effetto = '<span class="freccia-giu">↑ meglio</span>';
+    }
+    html += '<tr><td>'+c.nome+'</td><td class="num">'+arr(oggi,1)+' '+c.u+'</td><td class="num">'+
+            (media!=null?arr(media,1)+" "+c.u:"—")+'</td><td class="num">'+effetto+'</td></tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // Le leve che muovono davvero i valori del sangue
+  const messaggi = [];
+  if(tot.sat > mt.sat*1.3) messaggi.push("Molti grassi saturi oggi: sono la leva numero uno sul colesterolo LDL. Domani punto su olio, pesce e legumi.");
+  if(tot.alc > 0) messaggi.push("Hai bevuto "+arr(tot.alc,0)+" g di alcol: è il fattore che alza di più i trigliceridi. Due giorni senza e rientra.");
+  if(tot.fib >= mt.fib) messaggi.push("Fibra a target: aiuta colesterolo e glicemia più di quanto sembri.");
+  if(tot.sod > 2400) messaggi.push("Sodio alto: conta sulla pressione, non sul peso.");
+  if(messaggi.length) html += '<div class="nota" style="margin-top:12px">'+messaggi.map(esc).join("<br>")+'</div>';
+  box.innerHTML = html;
+}
+
+/* ---------------- azioni sulla timeline ---------------- */
+function accettaProposta(slotId){
+  const pg = pianoGiornata(giorno), g = G(giorno);
+  const lista = proponi(slotId, pg.piano[slotId], g.contesto, giorno, 4);
+  const scelta = lista[(indiceProposta[slotId]||0) % Math.max(1,lista.length)];
+  if(!scelta) return;
+  scelta.voci.forEach(function(v){ g.pasti[slotId].push(Object.assign({}, v, {aderenza:"piena", ora:new Date().toTimeString().slice(0,5)})); });
+  g.usate = (g.usate||[]).concat([scelta.proposta.id]);
+  salva(); render();
+}
+function saltaSlot(slotId){ const g=G(giorno); if(g.saltati.indexOf(slotId)<0) g.saltati.push(slotId); salva(); render(); }
+function ripristinaSlot(slotId){ const g=G(giorno); g.saltati = g.saltati.filter(function(x){return x!==slotId;}); salva(); render(); }
+function rimuoviVoce(slotId, i){ const g=G(giorno); g.pasti[slotId].splice(i,1); salva(); render(); }
+
+document.addEventListener("click", function(e){
+  const t = e.target.closest("button");
+  if(!t) return;
+  if(t.dataset.accetta) accettaProposta(t.dataset.accetta);
+  else if(t.dataset.altra){ const s=t.dataset.altra; indiceProposta[s]=(indiceProposta[s]||0)+1; render(); }
+  else if(t.dataset.salta) saltaSlot(t.dataset.salta);
+  else if(t.dataset.ripristina) ripristinaSlot(t.dataset.ripristina);
+  else if(t.dataset.rimuovi){ const p=t.dataset.rimuovi.split(":"); rimuoviVoce(p[0], +p[1]); }
+  else if(t.dataset.aggiungi) apriFoglioCibo(t.dataset.aggiungi, "fuori");
+  else if(t.dataset.variante) apriFoglioCibo(t.dataset.variante, "variante");
+});
+</script>
+
+<script>
+"use strict";
+/* ================================================================
+   INTERFACCIA — agenda, corpo, salute, profilo e grafici
+   ================================================================ */
+
+/* ---------------- grafico: andamento del peso ---------------- */
+function graficoPeso(){
+  const dati = S.pesi.slice().sort(function(a,b){ return a.data < b.data ? -1 : 1; });
+  if(dati.length < 2) return '<p class="sottile">Registra il peso almeno due volte e qui vedi la curva.</p>';
+  const W=320, H=150, ml=36, mr=12, mt=14, mb=24;
+  const kg = dati.map(function(d){ return d.kg; });
+  let min = Math.min.apply(null, kg), max = Math.max.apply(null, kg);
+  const obiettivo = S.profilo.pesoObiettivo;
+  const escursione = Math.max(1.2, max - min);
+  // l'obiettivo entra nella scala solo se è vicino: se è lontano schiaccerebbe la curva
+  const obVicino = obiettivo && obiettivo > min - escursione*0.8 && obiettivo < max + escursione*0.8;
+  if(obVicino){ min = Math.min(min, obiettivo); max = Math.max(max, obiettivo); }
+  const pad = Math.max(0.4, (max-min)*0.15); min -= pad; max += pad;
+  const x = function(i){ return ml + (W-ml-mr) * (dati.length===1?0.5:i/(dati.length-1)); };
+  const y = function(v){ return mt + (H-mt-mb) * (1 - (v-min)/(max-min||1)); };
+
+  // media mobile a 7 punti: separa il segnale dal rumore della bilancia
+  const media = dati.map(function(_,i){
+    const da = Math.max(0, i-6), fetta = kg.slice(da, i+1);
+    return fetta.reduce(function(a,b){return a+b;},0)/fetta.length;
+  });
+  const linea = dati.map(function(d,i){ return (i?"L":"M")+x(i).toFixed(1)+" "+y(d.kg).toFixed(1); }).join(" ");
+  const lineaM = media.map(function(v,i){ return (i?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1); }).join(" ");
+
+  let g = '<svg class="grafico" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Andamento del peso">';
+  [0,0.5,1].forEach(function(f){
+    const v = min + (max-min)*f, yy = y(v);
+    g += '<line class="asse" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+yy.toFixed(1)+'" y2="'+yy.toFixed(1)+'"/>'+
+         '<text x="'+(ml-6)+'" y="'+(yy+3).toFixed(1)+'" text-anchor="end">'+num(v,1)+'</text>';
+  });
+  if(obVicino){
+    g += '<line x1="'+ml+'" x2="'+(W-mr)+'" y1="'+y(obiettivo).toFixed(1)+'" y2="'+y(obiettivo).toFixed(1)+
+         '" stroke="var(--verde)" stroke-width="1.5" stroke-dasharray="4 3"/>'+
+         '<text x="'+(W-mr)+'" y="'+(y(obiettivo)-5).toFixed(1)+'" text-anchor="end" fill="var(--verde)">obiettivo '+num(obiettivo,0)+'</text>';
+  }
+  g += '<path d="'+lineaM+'" fill="none" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="round"/>';
+  g += '<path d="'+linea+'" fill="none" stroke="var(--accento)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  dati.forEach(function(d,i){
+    const ultimo = i === dati.length-1;
+    g += '<circle cx="'+x(i).toFixed(1)+'" cy="'+y(d.kg).toFixed(1)+'" r="'+(ultimo?4.5:2.4)+
+         '" fill="var(--accento)" stroke="var(--superficie)" stroke-width="'+(ultimo?2:1)+'"><title>'+
+         nGiorno(d.data)+" — "+num(d.kg,1)+' kg</title></circle>';
+  });
+  const p0 = dati[0], p1 = dati[dati.length-1];
+  g += '<text x="'+ml+'" y="'+(H-6)+'" text-anchor="start">'+p0.data.slice(8)+"/"+p0.data.slice(5,7)+'</text>';
+  g += '<text x="'+(W-mr)+'" y="'+(H-6)+'" text-anchor="end">'+p1.data.slice(8)+"/"+p1.data.slice(5,7)+'</text>';
+  g += '<text x="'+x(dati.length-1).toFixed(1)+'" y="'+(y(p1.kg)-9).toFixed(1)+'" text-anchor="end" fill="var(--ink)" font-size="10.5">'+num(p1.kg,1)+' kg</text>';
+  g += '</svg><div class="legenda"><span><i style="background:var(--accento)"></i>peso registrato</span>'+
+       '<span><i style="background:var(--ink-3)"></i>media 7 giorni</span>'+
+       (obiettivo && !obVicino ? '<span><i style="background:var(--verde)"></i>obiettivo '+num(obiettivo,1)+' kg, ancora fuori scala</span>' : '')+'</div>';
+  return g;
+}
+
+/* ---------------- grafico: energia degli ultimi 14 giorni ---------------- */
+function graficoEnergia(){
+  const tgt = targetKcal(), giorni = [];
+  for(let i=13;i>=0;i--){
+    const d = piuGiorni(isoOggi(), -i);
+    const voci = S.giorni[d] ? vociGiorno(d) : [];
+    giorni.push({data:d, kcal: voci.length ? somma(voci).kcal : null});
+  }
+  if(!giorni.some(function(g){return g.kcal!=null;})) return '<p class="sottile">Registra qualche giornata e qui vedi lo scarto rispetto al piano.</p>';
+  const W=320, H=140, ml=36, mr=10, mt=12, mb=22;
+  const valori = giorni.filter(function(g){return g.kcal!=null;}).map(function(g){return g.kcal;});
+  const max = Math.max(tgt*1.35, Math.max.apply(null, valori)*1.08);
+  const y = function(v){ return mt + (H-mt-mb) * (1 - v/max); };
+  const larg = (W-ml-mr)/14, bw = larg*0.62;
+  let g = '<svg class="grafico" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Energia giornaliera rispetto al budget">';
+  // banda di tolleranza attorno al target: dentro è "in linea"
+  g += '<rect x="'+ml+'" y="'+y(tgt*1.07).toFixed(1)+'" width="'+(W-ml-mr)+'" height="'+(y(tgt*0.93)-y(tgt*1.07)).toFixed(1)+
+       '" fill="var(--accento-tenue)"/>';
+  g += '<line class="asse" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+y(tgt).toFixed(1)+'" y2="'+y(tgt).toFixed(1)+'" stroke="var(--bordo-forte)"/>';
+  g += '<text x="'+(ml-6)+'" y="'+(y(tgt)+3).toFixed(1)+'" text-anchor="end">'+tgt+'</text>';
+  g += '<text x="'+(ml-6)+'" y="'+(y(0)+3).toFixed(1)+'" text-anchor="end">0</text>';
+  giorni.forEach(function(d,i){
+    if(d.kcal == null) return;
+    const alto = d.kcal > tgt*1.07, basso = d.kcal < tgt*0.93;
+    const col = alto ? "var(--rosso)" : basso ? "var(--ambra)" : "var(--verde)";
+    const yy = y(d.kcal), h = Math.max(2, y(0)-yy);
+    g += '<rect x="'+(ml+i*larg+(larg-bw)/2).toFixed(1)+'" y="'+yy.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+h.toFixed(1)+
+         '" rx="3" fill="'+col+'"><title>'+d.data.slice(8)+"/"+d.data.slice(5,7)+" — "+Math.round(d.kcal)+' kcal</title></rect>';
+  });
+  g += '<text x="'+ml+'" y="'+(H-5)+'">14 gg fa</text><text x="'+(W-mr)+'" y="'+(H-5)+'" text-anchor="end">oggi</text>';
+  g += '</svg><div class="legenda">'+
+    '<span><i style="background:var(--verde)"></i>in linea</span>'+
+    '<span><i style="background:var(--rosso)"></i>sopra il piano</span>'+
+    '<span><i style="background:var(--ambra)"></i>sotto il piano</span></div>';
+  return g;
+}
+
+/* ---------------- vista agenda ---------------- */
+const TIPI_EVENTO = [
+  {id:"cliente", nome:"Cena con cliente"}, {id:"amici", nome:"Cena con amici"},
+  {id:"ristorante", nome:"Ristorante"}, {id:"pizza", nome:"Pizza"},
+  {id:"viaggio", nome:"In viaggio"}, {id:"hotel", nome:"Hotel"},
+  {id:"festa", nome:"Festa o compleanno"}, {id:"veloce", nome:"Pranzo veloce"}
+];
+let tipoEventoScelto = "cliente";
+
+function renderAgenda(){
+  q("#chips-evento").innerHTML = TIPI_EVENTO.map(function(t){
+    return '<button class="chip" data-tipo-ev="'+t.id+'" aria-pressed="'+(t.id===tipoEventoScelto)+'">'+esc(t.nome)+'</button>';
+  }).join("");
+  if(!q("#ev-giorno").value) q("#ev-giorno").value = isoOggi();
+
+  let html = "";
+  for(let i=0;i<7;i++){
+    const d = piuGiorni(isoOggi(), i), gg = S.giorni[d];
+    const ev = gg && gg.eventi ? gg.eventi : [];
+    if(!ev.length) continue;
+    html += '<div class="scheda piatta" style="margin-bottom:8px"><div class="riga-tra"><b>'+nGiorno(d)+'</b></div>';
+    ev.forEach(function(e,idx){
+      const slot = SLOT.find(function(s){return s.id===e.slot;});
+      html += '<div class="voce"><span>'+esc(e.nota || (TIPI_EVENTO.find(function(t){return t.id===e.tipo;})||{nome:e.tipo}).nome)+'</span>'+
+              '<span class="g">'+(slot?slot.nome:e.slot)+'</span>'+
+              '<button data-togli-ev="'+d+':'+idx+'" aria-label="Togli">✕</button></div>';
+    });
+    html += '<p class="sottile" style="margin-top:8px">Le calorie di quel giorno sono già spostate su questo pasto.</p></div>';
+  }
+  q("#lista-agenda").innerHTML = html || '<p class="sottile">Niente in programma. Quando sai di una cena fuori, mettila qui: '+
+    'preparo la giornata prima, invece di rincorrerla dopo.</p>';
+
+  let ha = "";
+  for(let i=-2;i<5;i++){
+    const d = piuGiorni(isoOggi(), i), gg = S.giorni[d];
+    if(!gg || !(gg.attivita||[]).length) continue;
+    gg.attivita.forEach(function(a,idx){
+      const at = ATTIVITA.find(function(x){return x.id===a.tipo;});
+      const fatto = a.fatti != null;
+      ha += '<div class="voce"><span>'+esc(at?at.nome:a.tipo)+'</span>'+
+            '<span class="g">'+d.slice(8)+"/"+d.slice(5,7)+'</span>'+
+            '<span class="g">'+(fatto ? a.fatti+" min fatti" : a.previsti+" min previsti")+'</span>'+
+            (fatto ? '' : '<button class="btn piccolo" data-conferma-att="'+d+':'+idx+'">Fatto</button>')+
+            '<button data-togli-att="'+d+':'+idx+'" aria-label="Togli">✕</button></div>';
+    });
+  }
+  q("#lista-attivita").innerHTML = ha || '<p class="sottile">Nessun movimento programmato.</p>';
+}
+
+/* ---------------- vista corpo ---------------- */
+const CAMPI_MISURA = [
+  {id:"collo", nome:"Collo"}, {id:"vita", nome:"Vita"}, {id:"fianchi", nome:"Fianchi"},
+  {id:"petto", nome:"Petto"}, {id:"braccio", nome:"Braccio"}, {id:"coscia", nome:"Coscia"}
+];
+function renderCorpo(){
+  const ult = S.pesi[S.pesi.length-1];
+  q("#peso-attuale").textContent = ult ? num(ult.kg,1)+" kg" : "—";
+  q("#peso-obiettivo-v").textContent = S.profilo.pesoObiettivo ? num(S.profilo.pesoObiettivo,1)+" kg" : "—";
+  const r = ritmo();
+  if(S.pesi.length >= 2){
+    const primo = S.pesi[Math.max(0, S.pesi.length-15)];
+    const d = arr(ult.kg - primo.kg, 1);
+    const gg = Math.max(1, giorniTra(primo.data, ult.data));
+    const sett = arr(d/gg*7, 2);
+    q("#peso-trend").innerHTML = (d<0?"↓ ":d>0?"↑ ":"→ ")+num(Math.abs(d),1)+" kg in "+gg+" giorni · "+
+      num(Math.abs(sett),2)+" kg a settimana "+(sett<0?"in meno":sett>0?"in più":"")+" · BMI "+num(bmi(),1);
+  } else q("#peso-trend").textContent = "BMI "+num(bmi(),1);
+  if(r.kgSett && ult){
+    const restano = ult.kg - S.profilo.pesoObiettivo;
+    const sett = r.kgSett ? Math.abs(restano / r.kgSett) : 0;
+    q("#peso-eta").textContent = restano > 0.3 ? "≈ "+Math.ceil(sett)+" settimane a questo ritmo" : "obiettivo raggiunto";
+  } else q("#peso-eta").textContent = "";
+
+  q("#grafico-peso").innerHTML = graficoPeso();
+  const ultM = S.misure[S.misure.length-1] || {};
+  q("#campi-misure").innerHTML = CAMPI_MISURA.map(function(c){
+    return '<div class="campo"><label for="mis-'+c.id+'">'+c.nome+' (cm)</label>'+
+           '<input type="number" step="0.5" id="mis-'+c.id+'" value="'+(ultM[c.id]||"")+'"></div>';
+  }).join("");
+
+  const bf = massaGrassa(ultM);
+  let html = "";
+  if(bf != null){
+    const kgGrasso = arr(S.profilo.peso * bf/100, 1);
+    const kgMagra = arr(S.profilo.peso - kgGrasso, 1);
+    const stor = S.misure.map(function(m){ return {data:m.data, bf:massaGrassa(m)}; }).filter(function(x){return x.bf!=null;});
+    const dbf = stor.length>1 ? arr(stor[stor.length-1].bf - stor[0].bf, 1) : null;
+    html = '<div class="riga-tra"><span>Massa grassa stimata</span><span class="mono"><b>'+num(bf,1)+'%</b></span></div>'+
+           '<div class="riga-tra" style="margin-top:6px"><span class="sottile">Grasso / massa magra</span>'+
+           '<span class="mono sottile">'+num(kgGrasso,1)+' kg / '+num(kgMagra,1)+' kg</span></div>'+
+           (dbf != null ? '<div class="nota" style="margin-top:10px">'+
+             (dbf < -0.2 ? "Dalla prima misura hai perso "+num(Math.abs(dbf),1)+" punti di massa grassa: è il numero che conta più della bilancia."
+              : dbf > 0.2 ? "La massa grassa è salita di "+num(dbf,1)+" punti: se il peso è fermo, stai perdendo muscolo. Alzo le proteine."
+              : "Massa grassa stabile.")+'</div>' : '')+
+           '<p class="sottile" style="margin-top:8px">Stima da circonferenze (metodo U.S. Navy): utile per seguire l\'andamento, '+
+           'non per il valore assoluto. Misura sempre al mattino, a digiuno, nello stesso punto.</p>';
+  } else {
+    html = '<p class="sottile">Servono almeno collo e vita'+(S.profilo.sesso==="f"?" e fianchi":"")+' per stimare la massa grassa.</p>';
+  }
+  q("#esito-composizione").innerHTML = html;
+}
+
+/* ---------------- vista salute ---------------- */
+function renderSalute(){
+  // tabella dei referti
+  if(!S.esami.length){
+    q("#tabella-sangue").innerHTML = '<p class="sottile">Nessun referto inserito. Bastano i valori principali: '+
+      'colesterolo, trigliceridi, glicemia.</p>';
+  } else {
+    const esami = S.esami.slice(-4);
+    let h = '<table class="dati"><thead><tr><th>Valore</th>'+
+      esami.map(function(e){ return '<th style="text-align:right">'+e.data.slice(8)+"/"+e.data.slice(5,7)+"/"+e.data.slice(2,4)+'</th>'; }).join("")+
+      '<th style="text-align:right">Riferimento</th></tr></thead><tbody>';
+    ANALITI.forEach(function(a){
+      if(!esami.some(function(e){ return e.valori[a.id] != null; })) return;
+      h += '<tr><td>'+a.nome+'</td>';
+      esami.forEach(function(e){
+        const v = e.valori[a.id];
+        if(v == null){ h += '<td class="num sottile">—</td>'; return; }
+        const fuori = (a.min != null && v < a.min) || (a.max != null && v > a.max);
+        h += '<td class="num"'+(fuori?' style="color:var(--rosso);font-weight:600"':'')+'>'+v+'</td>';
+      });
+      h += '<td class="num sottile">'+(a.min?a.min+"–":"< ")+a.max+' '+a.unita+'</td></tr>';
+    });
+    q("#tabella-sangue").innerHTML = h+'</tbody></table>';
+  }
+
+  // proiezione
+  const pr = proiezione();
+  const box = q("#proiezione-sangue");
+  if(!pr){ box.innerHTML = '<p class="sottile">Inserisci un referto: da lì parto per stimare la tendenza.</p>'; return; }
+  if(pr.insufficiente){
+    box.innerHTML = '<p class="sottile">Ho '+pr.giorni+' giorni di diario dopo il referto: me ne servono almeno 3 per dire qualcosa di sensato. Continua a registrare.</p>';
+    return;
+  }
+  const m = pr.media;
+  let h = '<div class="riga" style="gap:8px;flex-wrap:wrap;margin-bottom:10px">'+
+    '<span class="semaforo '+(pr.confidenza==="buona"?"st-verde":pr.confidenza==="parziale"?"st-ambra":"st-neutro")+'">'+
+    '<i class="luce"></i>attendibilità '+pr.confidenza+'</span>'+
+    '<span class="sottile">su '+pr.giorni+' giorni registrati'+(pr.dPeso?", peso "+(pr.dPeso>0?"+":"")+pr.dPeso+" kg":"")+'</span></div>';
+  h += '<div class="avvolgi"><table class="dati"><thead><tr><th>Valore</th><th style="text-align:right">Referto</th>'+
+       '<th style="text-align:right">Stima oggi</th><th style="text-align:right">Direzione</th></tr></thead><tbody>';
+  pr.righe.forEach(function(r){
+    const buono = r.analita.verso === 0 ? 0 : r.analita.verso * r.grezzo;
+    const seg = Math.abs(r.grezzo) < r.incert*0.4 ? '<span class="sottile">stabile</span>'
+      : buono > 0 ? '<span class="freccia-giu">'+(r.grezzo>0?"↑":"↓")+' meglio</span>'
+      : '<span class="freccia-su">'+(r.grezzo>0?"↑":"↓")+' peggio</span>';
+    h += '<tr><td>'+r.analita.nome+'</td><td class="num">'+r.base+'</td>'+
+         '<td class="num">'+r.stima+' <span class="sottile">±'+r.incert+'</span></td><td class="num">'+seg+'</td></tr>';
+  });
+  h += '</tbody></table></div>';
+  h += '<p class="nota attenzione" style="margin-top:12px">Numeri stimati da come hai mangiato e da quanto ti sei mosso, '+
+       'non misurati. Servono a capire se la direzione è quella giusta: la verità la dice il prossimo prelievo.</p>';
+  box.innerHTML = h;
+
+  // leve alimentari
+  const mt = macroTarget(targetKcal());
+  const leve = [
+    {nome:"Grassi saturi", val:m.sat, tgt:mt.sat, u:"g", verso:-1, eff:"colesterolo LDL"},
+    {nome:"Fibra", val:m.fib, tgt:mt.fib, u:"g", verso:1, eff:"colesterolo e glicemia"},
+    {nome:"Zuccheri", val:m.zuc, tgt:mt.zuc, u:"g", verso:-1, eff:"trigliceridi e glicata"},
+    {nome:"Alcol", val:m.alc, tgt:mt.alc, u:"g", verso:-1, eff:"trigliceridi e gamma GT"},
+    {nome:"Sodio", val:m.sod, tgt:2000, u:"mg", verso:-1, eff:"pressione"},
+    {nome:"Pesce grasso", val:m.omega3, tgt:40, u:"g", verso:1, eff:"trigliceridi"},
+    {nome:"Verdura", val:m.verdura, tgt:300, u:"g", verso:1, eff:"sazietà e fibra"},
+    {nome:"Movimento", val:m.minAttivita, tgt:30, u:"min", verso:1, eff:"HDL e glicemia"}
+  ];
+  q("#leve-qualita").innerHTML = '<div class="avvolgi"><table class="dati"><thead><tr><th>Leva</th>'+
+    '<th style="text-align:right">Media</th><th style="text-align:right">Bersaglio</th><th>Agisce su</th></tr></thead><tbody>'+
+    leve.map(function(l){
+      const ok = l.verso === 1 ? l.val >= l.tgt*0.9 : l.val <= l.tgt*1.1;
+      return '<tr><td>'+l.nome+'</td><td class="num" style="color:'+(ok?"var(--verde)":"var(--ambra)")+';font-weight:600">'+
+        arr(l.val,0)+' '+l.u+'</td><td class="num sottile">'+l.tgt+' '+l.u+'</td><td class="sottile">'+l.eff+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+
+/* ---------------- vista profilo ---------------- */
+function renderProfilo(){
+  const p = S.profilo;
+  q("#p-nome").value = p.nome || ""; q("#p-sesso").value = p.sesso;
+  q("#p-eta").value = p.eta; q("#p-altezza").value = p.altezza;
+  q("#p-peso").value = p.peso; q("#p-peso-obiettivo").value = p.pesoObiettivo;
+  q("#p-attivita").value = String(p.laf); q("#p-obiettivo").value = p.obiettivo;
+  q("#p-settimane").value = p.settimane; q("#p-rientro").value = String(p.giorniRientro);
+  q("#p-regime").value = p.regime;
+  q("#chips-esclusioni").innerHTML = ESCLUSIONI.map(function(e){
+    return '<button class="chip" data-escl="'+e.id+'" aria-pressed="'+(p.esclusioni.indexOf(e.id)>=0)+'">'+esc(e.nome)+'</button>';
+  }).join("");
+
+  const r = ritmo();
+  q("#verdetto-ritmo").innerHTML = r.kgSett === 0 ? '<div class="nota">Mantenimento: nessun deficit.</div>'
+    : r.sostenibile
+      ? '<div class="nota">Ritmo sostenibile: <b>'+num(Math.abs(r.kgSett),2)+' kg a settimana</b>, '+
+        Math.abs(r.kcalGiorno)+' kcal al giorno di scarto. Così il peso se ne va e resta via.</div>'
+      : '<div class="nota attenzione">In '+p.settimane+' settimane servirebbe un taglio troppo violento: '+
+        'il corpo si difende e tu molli. Ho limitato il deficit a <b>'+num(Math.abs(r.kgSett),2)+' kg a settimana</b> — '+
+        'con questo passo ci vogliono circa <b>'+r.settimaneMinime+' settimane</b>.</div>';
+
+  const td = fabbisogno(), tgt = targetKcal(), mt = macroTarget(tgt);
+  q("#riepilogo-energia").innerHTML =
+    '<table class="dati"><tbody>'+
+    '<tr><td>Metabolismo basale</td><td class="num">'+metabolismoBase()+' kcal</td></tr>'+
+    '<tr><td>Fabbisogno con il tuo movimento</td><td class="num">'+td+' kcal</td></tr>'+
+    '<tr><td><b>Obiettivo giornaliero</b></td><td class="num"><b>'+tgt+' kcal</b></td></tr>'+
+    '<tr><td>Proteine</td><td class="num">'+mt.p+' g</td></tr>'+
+    '<tr><td>Carboidrati</td><td class="num">'+mt.c+' g</td></tr>'+
+    '<tr><td>Grassi</td><td class="num">'+mt.g+' g</td></tr>'+
+    '<tr><td>Fibra</td><td class="num">'+mt.fib+' g</td></tr>'+
+    '<tr><td>Acqua</td><td class="num">'+num(S.profilo.peso*0.033,1)+' L</td></tr>'+
+    '</tbody></table>'+
+    '<p class="sottile" style="margin-top:8px">Formula di Mifflin-St Jeor. Il fabbisogno vero varia: se il peso non si muove '+
+    'per due settimane, il numero giusto è quello che ti dice la bilancia, non la formula.</p>';
+}
+
+/* ---------------- dispatcher ---------------- */
+function render(){
+  if(vistaAttiva === "oggi") renderOggi();
+  else if(vistaAttiva === "agenda") renderAgenda();
+  else if(vistaAttiva === "corpo") renderCorpo();
+  else if(vistaAttiva === "salute") renderSalute();
+  else if(vistaAttiva === "profilo") renderProfilo();
+  const banner = q("#banner-esempio");
+  if(banner) banner.hidden = !S.esempio;
+}
+</script>
+
+<script>
+"use strict";
+/* ================================================================
+   REGISTRAZIONE — cerca, pesa a occhio, fotografa
+   ================================================================ */
+let slotAttivo = null, aderenzaAttiva = "fuori", ciboScelto = null, aiSample = null, aiLimiti = null;
+
+const PORZIONE_TIPO = {cereali:80, legumi:150, carne:150, pesce:150, uova:110, latticini:125,
+  verdura:200, frutta:150, "frutta secca":25, grassi:10, piatti:250, dolci:40, bevande:200};
+
+const RIFERIMENTI = [
+  ["Palmo della mano, senza dita", "100–120 g di carne o pesce"],
+  ["Pugno chiuso", "150–200 g di pasta o riso cotti (60–80 g a crudo)"],
+  ["Mano a coppa", "30 g di frutta secca, 40 g di cereali"],
+  ["Due mani a coppa", "150–200 g di verdura"],
+  ["Pollice intero", "10 g di olio o burro, come un cucchiaio"],
+  ["Fetta di pane da panetteria", "circa 50 g; una rosetta 70 g"],
+  ["Piatto piano da 26–28 cm", "un primo che copre metà piatto in strato singolo: 200 g cotti"],
+  ["Bicchiere da vino riempito a metà", "125 ml, un calice"]
+];
+
+function normalizza(s){ return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+
+function apriFoglioCibo(slotId, aderenza){
+  slotAttivo = slotId; aderenzaAttiva = aderenza || "fuori"; ciboScelto = null;
+  const slot = SLOT.find(function(s){return s.id===slotId;});
+  q("#foglio-cibo-tit").textContent = aderenzaAttiva === "variante"
+    ? "Cosa hai mangiato davvero" : "Aggiungi a "+(slot?slot.nome.toLowerCase():"oggi");
+  q("#cerca-cibo").value = ""; q("#quantita-blocco").hidden = true;
+  q("#anteprima-foto").innerHTML = "";
+  cercaCibo("");
+  q("#foglio-cibo").showModal();
+  setTimeout(function(){ q("#cerca-cibo").focus(); }, 60);
+}
+
+function cercaCibo(testo){
+  const t = normalizza(testo.trim());
+  let lista = Object.keys(ALIMENTI).map(function(k){ return ALIMENTI[k]; });
+  if(t) lista = lista.filter(function(a){ return normalizza(a.nome).indexOf(t) >= 0 || normalizza(a.cat).indexOf(t) >= 0; });
+  else {
+    // senza ricerca mostro quello che ha senso per questo pasto
+    const utili = {colazione:["latticini","cereali","frutta","bevande"], spuntino:["frutta","frutta secca","latticini"],
+      pranzo:["cereali","piatti","carne","pesce","verdura"], merenda:["frutta","dolci","latticini"],
+      cena:["pesce","carne","verdura","piatti","legumi"]}[slotAttivo] || [];
+    lista = lista.filter(function(a){ return utili.indexOf(a.cat) >= 0; });
+  }
+  q("#risultati-cibo").innerHTML = lista.slice(0,40).map(function(a){
+    return '<button type="button" data-cibo="'+a.id+'"><span>'+esc(a.nome)+'</span>'+
+           '<span class="kc">'+a.kcal+' kcal/100 g</span></button>';
+  }).join("") || '<button type="button" disabled style="color:var(--ink-3)">Nessun risultato: registra a mano il piatto più simile.</button>';
+}
+
+function scegliCibo(id){
+  const a = ALIMENTI[id];
+  if(!a) return;
+  ciboScelto = a;
+  q("#quantita-blocco").hidden = false;
+  q("#cibo-scelto-nome").textContent = a.nome;
+  q("#cibo-scelto-kcal").textContent = a.kcal+" kcal / 100 g";
+  const base = a.pezzo || PORZIONE_TIPO[a.cat] || 100;
+  const opzioni = a.pezzo
+    ? [{n:"1", g:a.pezzo}, {n:"2", g:a.pezzo*2}, {n:"3", g:a.pezzo*3}]
+    : [{n:"Piccola", g:Math.round(base*0.6/5)*5}, {n:"Media", g:base}, {n:"Abbondante", g:Math.round(base*1.5/5)*5}];
+  q("#chips-porzione").innerHTML = opzioni.map(function(o){
+    return '<button type="button" class="chip" data-porz="'+o.g+'">'+o.n+(a.pezzo?(o.n==="1"?" pezzo":" pezzi"):"")+' · '+o.g+' g</button>';
+  }).join("");
+  q("#input-grammi").value = base;
+  q("#aiuto-porzione").textContent = a.pezzo ? "Un pezzo pesa circa "+a.pezzo+" g." : "Se non hai la bilancia, usa i riferimenti qui sotto.";
+}
+
+function aggiungiCibo(){
+  if(!ciboScelto) return;
+  const g = +q("#input-grammi").value;
+  if(!(g > 0)) return;
+  const v = vocePasto(ciboScelto, g);
+  v.aderenza = aderenzaAttiva;
+  v.ora = new Date().toTimeString().slice(0,5);
+  const gg = G(giorno);
+  gg.pasti[slotAttivo || "pranzo"].push(v);
+  gg.saltati = gg.saltati.filter(function(x){ return x !== slotAttivo; });
+  salva();
+  q("#foglio-cibo").close();
+  render();
+}
+
+/* ---------------- stima della porzione dalla foto ----------------
+   Dove c'è Claude, la foto viene letta davvero; altrove restano i
+   riferimenti a occhio, che è comunque meglio di tirare a indovinare. */
+function mostraRiferimenti(){
+  q("#anteprima-foto").innerHTML = '<table class="dati">'+RIFERIMENTI.map(function(r){
+    return '<tr><td>'+esc(r[0])+'</td><td class="sottile">'+esc(r[1])+'</td></tr>'; }).join("")+'</table>';
+}
+
+async function stimaDaFoto(file){
+  const prev = q("#anteprima-foto");
+  const url = URL.createObjectURL(file);
+  prev.innerHTML = '<img src="'+url+'" alt="Piatto fotografato" style="width:100%;max-height:190px;object-fit:cover;border-radius:10px">'+
+    '<p class="sottile" style="margin-top:8px" id="esito-foto">Sto guardando il piatto…</p>';
+  if(!aiSample || !aiLimiti || !aiLimiti.images){
+    q("#esito-foto").innerHTML = "Qui la lettura automatica della foto non è disponibile: usa i riferimenti a occhio qui sotto.";
+    mostraRiferimenti();
+    return;
+  }
+  const elenco = Object.keys(ALIMENTI).map(function(k){ return k+"="+ALIMENTI[k].nome; }).join("; ");
+  const prompt =
+    "Guarda la foto di questo piatto e stima ogni componente e il suo peso in grammi, al netto degli scarti.\n"+
+    "Usa le stoviglie come riferimento: un piatto piano è 26-28 cm, una forchetta 20 cm, un bicchiere da vino contiene 125 ml se riempito a metà.\n"+
+    "Rispondi SOLO con un array JSON di oggetti con questi campi:\n"+
+    '{"id": "<id dall\'elenco oppure null>", "nome": "nome in italiano", "grammi": 120, '+
+    '"kcal100": null, "p100": null, "c100": null, "g100": null, "confidenza": "alta|media|bassa"}\n'+
+    "Se il componente è nell'elenco usa il suo id e lascia i campi *100 a null. Se non c'è, metti id null e stima i valori per 100 g.\n"+
+    "Elenco alimenti disponibili: "+elenco;
+  try{
+    const dati = await aiSample.json(prompt, {images:file, modelTier:"default"});
+    const righe = Array.isArray(dati) ? dati : (dati && dati.componenti) || [];
+    if(!righe.length) throw {code:"vuoto"};
+    let html = '<div class="etichetta" style="margin-top:10px">Stima dalla foto</div>';
+    righe.forEach(function(r, i){
+      const al = r.id && ALIMENTI[r.id] ? ALIMENTI[r.id] : null;
+      const nome = al ? al.nome : (r.nome || "componente");
+      const g = Math.max(1, Math.round(+r.grammi || 0));
+      const kcal = al ? Math.round(al.kcal*g/100) : Math.round((+r.kcal100||0)*g/100);
+      html += '<div class="voce"><span>'+esc(nome)+'</span><span class="g">'+g+' g</span>'+
+              '<span class="g">'+esc(r.confidenza||"")+'</span><span class="kc">'+kcal+'</span>'+
+              '<button class="btn piccolo" data-stima="'+i+'">Aggiungi</button></div>';
+    });
+    html += '<p class="sottile" style="margin-top:8px">Stima a vista: correggi i grammi se sai di essere lontano. '+
+            'La foto non viene salvata da nessuna parte.</p>';
+    prev.insertAdjacentHTML("beforeend", html);
+    q("#esito-foto").textContent = "Ecco cosa vedo nel piatto.";
+    prev.dataset.stime = JSON.stringify(righe);
+  }catch(e){
+    const messaggi = {not_granted:"Serve il tuo consenso per far leggere la foto a Claude.",
+      rate_limited:"Troppe richieste in poco tempo: riprova fra un minuto.",
+      images_unavailable:"Da qui non posso leggere le immagini.",
+      invalid_json:"Non sono riuscito a leggere il piatto."};
+    q("#esito-foto").textContent = (messaggi[e && e.code] || "Non sono riuscito a stimare la porzione.")+" Usa i riferimenti qui sotto.";
+    mostraRiferimenti();
+  }
+}
+
+function aggiungiDaStima(i){
+  const prev = q("#anteprima-foto");
+  const righe = JSON.parse(prev.dataset.stime || "[]");
+  const r = righe[i];
+  if(!r) return;
+  const g = Math.max(1, Math.round(+r.grammi || 0));
+  let v;
+  if(r.id && ALIMENTI[r.id]) v = vocePasto(ALIMENTI[r.id], g);
+  else {
+    const k = g/100;
+    v = {alimento:null, nome:r.nome||"Piatto", grammi:g,
+         kcal:arr((+r.kcal100||0)*k,0), p:arr((+r.p100||0)*k,1), c:arr((+r.c100||0)*k,1), g:arr((+r.g100||0)*k,1),
+         sat:0, fib:0, zuc:0, sod:0, alc:0};
+  }
+  v.aderenza = aderenzaAttiva; v.fonte = "foto";
+  v.ora = new Date().toTimeString().slice(0,5);
+  G(giorno).pasti[slotAttivo || "pranzo"].push(v);
+  salva(); render();
+  q("#foglio-cibo").close();
+}
+
+/* ---------------- movimento ---------------- */
+function apriFoglioAttivita(){
+  q("#att-tipo").innerHTML = ATTIVITA.map(function(a){ return '<option value="'+a.id+'">'+esc(a.nome)+'</option>'; }).join("");
+  aggiornaStimaAttivita();
+  const gg = G(giorno);
+  q("#lista-attivita-oggi").innerHTML = (gg.attivita||[]).map(function(a,i){
+    const at = ATTIVITA.find(function(x){return x.id===a.tipo;});
+    return '<div class="voce"><span>'+esc(at?at.nome:a.tipo)+'</span>'+
+      '<span class="g">'+a.previsti+' min previsti</span>'+
+      '<span class="g">'+(a.fatti!=null?a.fatti+" fatti":"—")+'</span>'+
+      '<button data-togli-att-oggi="'+i+'" aria-label="Togli">✕</button></div>';
+  }).join("");
+  q("#foglio-attivita").showModal();
+}
+function aggiornaStimaAttivita(){
+  const a = ATTIVITA.find(function(x){return x.id === q("#att-tipo").value;});
+  const min = +q("#att-previsti").value || 0;
+  const k = Math.round((a?a.met:4) * S.profilo.peso * (min/60) * 0.7);
+  q("#att-stima").innerHTML = "Valgono circa <b>"+k+" kcal</b>, che aggiungo al budget di oggi. "+
+    "Se poi fai meno, la differenza me la riprendo domani: è così che funziona la vita vera.";
+}
+</script>
+
+<script>
+"use strict";
+/* ================================================================
+   COLLEGAMENTI, BACKUP, PRIMO AVVIO
+   ================================================================ */
+
+/* ---------------- referto ---------------- */
+function apriFoglioEsame(){
+  q("#es-data").value = isoOggi();
+  const ult = S.esami[S.esami.length-1] || {valori:{}};
+  q("#campi-sangue").innerHTML = ANALITI.map(function(a){
+    return '<div class="campo"><label for="es-'+a.id+'">'+esc(a.nome)+' <span class="sottile">'+a.unita+'</span></label>'+
+           '<input type="number" step="0.01" id="es-'+a.id+'" placeholder="'+(ult.valori[a.id]!=null?ult.valori[a.id]:"")+'"></div>';
+  }).join("");
+  q("#foglio-esame").showModal();
+}
+function salvaEsame(){
+  const valori = {};
+  let almeno = false;
+  ANALITI.forEach(function(a){
+    const v = q("#es-"+a.id).value;
+    if(v !== ""){ valori[a.id] = +v; almeno = true; }
+  });
+  if(!almeno){ q("#foglio-esame").close(); return; }
+  S.esami.push({data:q("#es-data").value || isoOggi(), valori:valori});
+  S.esami.sort(function(a,b){ return a.data < b.data ? -1 : 1; });
+  salva(); q("#foglio-esame").close(); render();
+}
+
+/* ---------------- backup ---------------- */
+function esporta(){
+  const blob = new Blob([JSON.stringify(S, null, 1)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "life-diet-"+isoOggi()+".json";
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function importa(file){
+  const r = new FileReader();
+  r.onload = function(){
+    try{
+      const dati = JSON.parse(r.result);
+      if(!dati || !dati.profilo) throw new Error("formato");
+      S = dati; S.esempio = false; salva(); render();
+      alert("Backup ripristinato.");
+    }catch(e){ alert("Il file non è un backup di Life Diet."); }
+  };
+  r.readAsText(file);
+}
+function applicaTema(){
+  const t = S.impostazioni.tema;
+  if(t === "auto") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.setAttribute("data-theme", t);
+}
+
+/* ---------------- dati di esempio ----------------
+   Al primo avvio l'app non è una scatola vuota: mostra una settimana
+   vissuta davvero, cena di lavoro compresa, così si capisce cosa fa. */
+function seedGiorno(iso, spec){
+  const g = G(iso);
+  Object.keys(spec.pasti).forEach(function(slot){
+    spec.pasti[slot].forEach(function(par){
+      const v = vocePasto(ALIMENTI[par[0]], par[1]);
+      v.aderenza = par[2] || "piena";
+      g.pasti[slot].push(v);
+    });
+  });
+  if(spec.attivita) g.attivita = spec.attivita;
+  if(spec.eventi) g.eventi = spec.eventi;
+  g.acqua = spec.acqua || 6;
+  g.chiuso = true;
+}
+function generaEsempio(){
+  S = statoVuoto();
+  S.esempio = true;
+  S.profilo = {nome:"", sesso:"m", eta:52, altezza:178, peso:86.4, pesoObiettivo:78,
+    laf:1.375, obiettivo:"perdere", settimane:20, giorniRientro:3,
+    regime:"onnivoro", esclusioni:[]};
+
+  const oggi = isoOggi();
+  const pesi = [88.2,88.0,87.7,87.6,87.2,87.1,86.8,86.9,86.5,86.4];
+  pesi.forEach(function(kg,i){ S.pesi.push({data:piuGiorni(oggi, -40 + i*4), kg:kg}); });
+  S.misure.push({data:piuGiorni(oggi,-40), collo:40, vita:101, fianchi:103, petto:106, braccio:33, coscia:58});
+  S.misure.push({data:piuGiorni(oggi,-2), collo:39.5, vita:97.5, fianchi:101, petto:105, braccio:33.5, coscia:57});
+  S.esami.push({data:piuGiorni(oggi,-45), valori:{col_tot:232, ldl:148, hdl:44, tg:198, glicemia:104,
+    hba1c:5.7, gpt:38, ggt:68, uricemia:6.4, creatinina:0.95, vitd:22}});
+
+  const normale = {pasti:{
+    colazione:[["yogurt_greco0",200],["avena",60],["mirtilli",80],["banana",120]],
+    spuntino:[["mela",150]],
+    pranzo:[["pasta_int",120],["sugo",100],["parmigiano",15],["insalata",150],["olio",10],["pane_int",50]],
+    merenda:[["mandorle",25]],
+    cena:[["branzino",200],["patate_forno",220],["broccoli",180],["olio",10]]
+  }, attivita:[{tipo:"camminata_veloce", previsti:45, fatti:45}]};
+  const leggero = {pasti:{
+    colazione:[["pane_int",90],["ricotta",100],["miele",12],["caffe",30]],
+    spuntino:[["pera",150],["noci",15]],
+    pranzo:[["farro",95],["ceci",200],["pomodori",150],["olio",10]],
+    merenda:[["yogurt_greco0",170]],
+    cena:[["pollo",200],["verdure_grigl",200],["pane_int",70],["olio",10]]
+  }, attivita:[{tipo:"camminata", previsti:30, fatti:30}]};
+  // Il pranzo con i colleghi: nessuno rinuncia alla pizza, si compensa e basta.
+  const pizzaColleghi = {pasti:{
+    colazione:[["yogurt_greco0",170],["avena",45],["mela",150]],
+    spuntino:[["caffe",30]],
+    pranzo:[["pizza",550,"fuori"],["birra",330,"fuori"]],
+    merenda:[["mela",150]],
+    cena:[["branzino",180],["insalata",150],["pane_int",60],["olio",10]]
+  }, eventi:[{tipo:"pizza", slot:"pranzo", nota:"Pizza con i colleghi"}], attivita:[]};
+  // La sera in cui ordina il cliente: fritto misto, vino, dolce e amaro.
+  const cenaLavoro = {pasti:{
+    colazione:[["cappuccino",150],["cornetto",60]],
+    spuntino:[["caffe",30]],
+    pranzo:[["pane",100],["crudo",60],["insalata",60]],
+    merenda:[],
+    cena:[["insalata_mare",120,"fuori"],["fritto_misto",280,"fuori"],["patatine_fritte",150,"fuori"],
+          ["vino_rosso",500,"fuori"],["pane",80,"fuori"],["tiramisu",140,"fuori"],["amaro",40,"fuori"]]
+  }, eventi:[{tipo:"cliente", slot:"cena", nota:"Cena con cliente \u2014 pesce e vino"}], attivita:[]};
+  // Il giorno dopo: rientro, ma senza fare la fame.
+  const rientroParziale = {pasti:{
+    colazione:[["yogurt_greco0",150],["avena",50],["fragole",100]],
+    spuntino:[["pera",150]],
+    pranzo:[["riso_int",85],["pollo",180],["zucchine",200],["olio",10],["pane_int",40]],
+    merenda:[["mandorle",15],["cioccolato_fond",15,"variante"]],
+    cena:[["minestrone",400],["uovo",110],["pane_int",30],["olio",6]]
+  }, attivita:[{tipo:"camminata_veloce", previsti:60, fatti:35}]};
+
+  seedGiorno(piuGiorni(oggi,-7), normale);
+  seedGiorno(piuGiorni(oggi,-6), leggero);
+  seedGiorno(piuGiorni(oggi,-5), normale);
+  seedGiorno(piuGiorni(oggi,-4), leggero);
+  seedGiorno(piuGiorni(oggi,-3), pizzaColleghi);
+  seedGiorno(piuGiorni(oggi,-2), cenaLavoro);
+  seedGiorno(piuGiorni(oggi,-1), rientroParziale);
+  G(oggi).attivita = [{tipo:"camminata_veloce", previsti:60, fatti:null}];
+  G(oggi).contesto = "casa";
+}
+
+/* ---------------- collegamenti ---------------- */
+function vaiA(v){
+  vistaAttiva = v;
+  qa(".vista").forEach(function(s){ s.classList.toggle("attiva", s.id === "vista-"+v); });
+  qa(".nav button").forEach(function(b){
+    if(b.dataset.vista === v) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
+  });
+  window.scrollTo({top:0, behavior:"instant"});
+  render();
+}
+
+function collega(){
+  qa(".nav button").forEach(function(b){ b.addEventListener("click", function(){ vaiA(b.dataset.vista); }); });
+  q("#giorno-prec").addEventListener("click", function(){ giorno = piuGiorni(giorno,-1); indiceProposta = {}; render(); });
+  q("#giorno-succ").addEventListener("click", function(){ giorno = piuGiorni(giorno,1); indiceProposta = {}; render(); });
+  q("#btn-acqua").addEventListener("click", function(){ const g=G(giorno); g.acqua=(g.acqua||0)+1; salva(); render(); });
+  q("#btn-acqua").addEventListener("dblclick", function(){ const g=G(giorno); g.acqua=Math.max(0,(g.acqua||0)-2); salva(); render(); });
+  q("#btn-attivita").addEventListener("click", apriFoglioAttivita);
+  q("#btn-fuori-programma").addEventListener("click", function(){
+    const ora = new Date().getHours();
+    const slot = ora < 10 ? "colazione" : ora < 12 ? "spuntino" : ora < 15 ? "pranzo" : ora < 18 ? "merenda" : "cena";
+    apriFoglioCibo(slot, "fuori");
+  });
+  q("#btn-chiudi-giornata").addEventListener("click", function(){ const g=G(giorno); g.chiuso=!g.chiuso; salva(); render(); });
+
+  q("#cerca-cibo").addEventListener("input", function(e){ cercaCibo(e.target.value); });
+  q("#btn-aggiungi-cibo").addEventListener("click", aggiungiCibo);
+  q("#btn-riferimenti").addEventListener("click", mostraRiferimenti);
+  q("#btn-foto").addEventListener("click", function(){ q("#file-foto").click(); });
+  q("#file-foto").addEventListener("change", function(e){ if(e.target.files[0]) stimaDaFoto(e.target.files[0]); });
+
+  q("#att-tipo").addEventListener("change", aggiornaStimaAttivita);
+  q("#att-previsti").addEventListener("input", aggiornaStimaAttivita);
+  q("#btn-salva-attivita").addEventListener("click", function(){
+    const g = G(giorno);
+    const fatti = q("#att-fatti").value;
+    g.attivita.push({tipo:q("#att-tipo").value, previsti:+q("#att-previsti").value||0, fatti: fatti==="" ? null : +fatti});
+    salva(); q("#foglio-attivita").close(); render();
+  });
+
+  q("#btn-nuovo-esame").addEventListener("click", apriFoglioEsame);
+  q("#btn-salva-esame").addEventListener("click", salvaEsame);
+
+  q("#btn-salva-peso").addEventListener("click", function(){
+    const kg = +q("#input-peso").value;
+    if(!(kg > 20 && kg < 350)) return;
+    S.pesi = S.pesi.filter(function(p){ return p.data !== isoOggi(); });
+    S.pesi.push({data:isoOggi(), kg:kg});
+    S.pesi.sort(function(a,b){ return a.data < b.data ? -1 : 1; });
+    S.profilo.peso = kg; S.esempio = false;
+    q("#input-peso").value = ""; salva(); render();
+  });
+  q("#btn-salva-misure").addEventListener("click", function(){
+    const m = {data:isoOggi()};
+    let almeno = false;
+    CAMPI_MISURA.forEach(function(c){ const v = q("#mis-"+c.id).value; if(v!==""){ m[c.id] = +v; almeno = true; } });
+    if(!almeno) return;
+    S.misure = S.misure.filter(function(x){ return x.data !== isoOggi(); });
+    S.misure.push(m);
+    S.misure.sort(function(a,b){ return a.data < b.data ? -1 : 1; });
+    salva(); render();
+  });
+
+  q("#btn-salva-profilo").addEventListener("click", function(){
+    const p = S.profilo;
+    p.nome = q("#p-nome").value.trim(); p.sesso = q("#p-sesso").value;
+    p.eta = +q("#p-eta").value || p.eta; p.altezza = +q("#p-altezza").value || p.altezza;
+    p.peso = +q("#p-peso").value || p.peso; p.pesoObiettivo = +q("#p-peso-obiettivo").value || p.pesoObiettivo;
+    p.laf = +q("#p-attivita").value; p.obiettivo = q("#p-obiettivo").value;
+    p.settimane = +q("#p-settimane").value || p.settimane; p.giorniRientro = +q("#p-rientro").value;
+    p.regime = q("#p-regime").value;
+    S.esempio = false;
+    if(!S.pesi.length || S.pesi[S.pesi.length-1].kg !== p.peso) S.pesi.push({data:isoOggi(), kg:p.peso});
+    salva(); render();
+  });
+
+  q("#btn-salva-evento").addEventListener("click", function(){
+    const d = q("#ev-giorno").value || isoOggi();
+    G(d).eventi.push({tipo:tipoEventoScelto, slot:q("#ev-slot").value, nota:q("#ev-nota").value.trim()});
+    q("#ev-nota").value = ""; salva(); render();
+  });
+
+  q("#btn-export").addEventListener("click", esporta);
+  q("#btn-import").addEventListener("click", function(){ q("#file-import").click(); });
+  q("#file-import").addEventListener("change", function(e){ if(e.target.files[0]) importa(e.target.files[0]); });
+  q("#btn-tema").addEventListener("click", function(){
+    const giro = {auto:"light", light:"dark", dark:"auto"};
+    S.impostazioni.tema = giro[S.impostazioni.tema] || "auto";
+    applicaTema(); salva();
+    q("#btn-tema").textContent = "Tema: "+{auto:"automatico", light:"chiaro", dark:"scuro"}[S.impostazioni.tema];
+  });
+  q("#btn-azzera").addEventListener("click", function(){
+    if(!confirm("Cancello profilo, diario, pesi ed esami. Sicuro?")) return;
+    S = statoVuoto(); salva(); vaiA("profilo");
+  });
+
+  // secondo livello: pulsanti generati dinamicamente
+  document.addEventListener("click", function(e){
+    const t = e.target.closest("button");
+    if(!t) return;
+    if(t.dataset.cibo) scegliCibo(t.dataset.cibo);
+    else if(t.dataset.porz){ q("#input-grammi").value = t.dataset.porz;
+      qa("#chips-porzione .chip").forEach(function(c){ c.setAttribute("aria-pressed", c===t); }); }
+    else if(t.dataset.stima) aggiungiDaStima(+t.dataset.stima);
+    else if(t.dataset.tipoEv){ tipoEventoScelto = t.dataset.tipoEv; renderAgenda(); }
+    else if(t.dataset.escl){
+      const id = t.dataset.escl, p = S.profilo;
+      const i = p.esclusioni.indexOf(id);
+      if(i >= 0) p.esclusioni.splice(i,1); else p.esclusioni.push(id);
+      salva(); renderProfilo();
+    }
+    else if(t.dataset.togliEv){ const p = t.dataset.togliEv.split(":"); G(p[0]).eventi.splice(+p[1],1); salva(); render(); }
+    else if(t.dataset.togliAtt){ const p = t.dataset.togliAtt.split(":"); G(p[0]).attivita.splice(+p[1],1); salva(); render(); }
+    else if(t.dataset.togliAttOggi){ G(giorno).attivita.splice(+t.dataset.togliAttOggi,1); salva(); apriFoglioAttivita(); render(); }
+    else if(t.dataset.confermaAtt){
+      const p = t.dataset.confermaAtt.split(":"), a = G(p[0]).attivita[+p[1]];
+      const r = prompt("Quanti minuti hai fatto davvero?", a.previsti);
+      if(r !== null){ a.fatti = Math.max(0, +r || 0); salva(); render(); }
+    }
+    else if(t.dataset.esci){ S.esempio = false; S.giorni = {}; S.pesi = []; S.misure = []; S.esami = []; salva(); vaiA("profilo"); }
+  });
+}
+
+/* ---------------- avvio ---------------- */
+(function avvio(){
+  S = carica();
+  if(!S || !S.profilo){ generaEsempio(); salva(); }
+  if(!S.impostazioni) S.impostazioni = {tema:"auto"};
+  applicaTema();
+
+  const banner = document.createElement("div");
+  banner.id = "banner-esempio";
+  banner.className = "nota attenzione";
+  banner.style.marginBottom = "14px";
+  banner.innerHTML = "<div>Quelli che vedi sono <b>dati di esempio</b>: una settimana vera, con dentro la pizza "+
+    "coi colleghi e una cena di lavoro, cos\u00ec capisci subito come ragiona l'app.</div>"+
+    "<button class=\"btn piccolo\" data-esci=\"1\" style=\"margin-top:10px\">Parti dai miei dati</button>";
+  document.querySelector("main").prepend(banner);
+
+  collega();
+  q("#btn-tema").textContent = "Tema: "+{auto:"automatico", light:"chiaro", dark:"scuro"}[S.impostazioni.tema];
+  vaiA("oggi");
+
+  // Claude, dove c'è: serve solo a leggere la foto del piatto
+  if(window.claude && typeof window.claude.use === "function"){
+    window.claude.use("sample").then(function(s){
+      if(!s) return;
+      aiSample = s;
+      return s.limits().then(function(l){
+        aiLimiti = l;
+        if(l && l.images) q("#stato-foto").textContent =
+          "Fotografa il piatto: leggo cosa c'è e stimo i grammi. Al ristorante è l'unico modo per non tirare a indovinare.";
+      });
+    }).catch(function(){});
+  }
+
+  // installabile su Android: si aggiunge alla schermata home e funziona offline
+  if("serviceWorker" in navigator && location.protocol === "https:"){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
