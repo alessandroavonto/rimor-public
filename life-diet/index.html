@@ -40,6 +40,10 @@
   --ambra-tenue:#FBF0DA;
   --rosso:#B03A2E;
   --rosso-tenue:#FAE7E3;
+  --pasta:#E6BC85;
+  --pasta-bordo:#C08F4A;
+  --piatto:#FBFBFD;
+  --piatto-bordo:#D5D9E3;
   --ombra:0 1px 2px rgba(22,26,34,.06), 0 8px 24px -16px rgba(22,26,34,.35);
   --ombra-alta:0 -2px 30px rgba(22,26,34,.14);
   --r-s:8px; --r-m:14px; --r-l:20px;
@@ -68,6 +72,10 @@
     --ambra-tenue:#2C2415;
     --rosso:#F0897B;
     --rosso-tenue:#301C1A;
+    --pasta:#C79A5E;
+    --pasta-bordo:#8C6636;
+    --piatto:#252932;
+    --piatto-bordo:#3A4050;
     --ombra:0 1px 2px rgba(0,0,0,.5), 0 8px 24px -16px rgba(0,0,0,.8);
     --ombra-alta:0 -2px 30px rgba(0,0,0,.5);
   }
@@ -81,6 +89,10 @@
   --verde:#6FC47E; --verde-tenue:#1B2A1F;
   --ambra:#E3B24A; --ambra-tenue:#2C2415;
   --rosso:#F0897B; --rosso-tenue:#301C1A;
+  --pasta:#C79A5E;
+  --pasta-bordo:#8C6636;
+  --piatto:#252932;
+  --piatto-bordo:#3A4050;
   --ombra:0 1px 2px rgba(0,0,0,.5), 0 8px 24px -16px rgba(0,0,0,.8);
   --ombra-alta:0 -2px 30px rgba(0,0,0,.5);
 }
@@ -277,6 +289,21 @@ table.dati td.num{font-family:var(--dati);text-align:right;font-variant-numeric:
 .nota{font-size:12px;color:var(--ink-2);background:var(--superficie-2);border:1px solid var(--bordo);border-left:3px solid var(--accento);border-radius:var(--r-s);padding:9px 11px}
 .nota.attenzione{border-left-color:var(--ambra)}
 .freccia-su{color:var(--rosso)} .freccia-giu{color:var(--verde)}
+
+
+/* ---------- guida visiva alle porzioni ---------- */
+.porzioni{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.porzione{border:1px solid var(--bordo);border-radius:var(--r-m);padding:8px 8px 10px;background:var(--superficie);
+  cursor:pointer;text-align:center;transition:border-color .15s ease, transform .08s ease}
+.porzione:active{transform:scale(.98)}
+.porzione[aria-pressed="true"]{border-color:var(--accento);background:var(--accento-tenue)}
+.porzione svg{width:100%;height:auto;display:block}
+.porzione .nome{font-size:12px;font-weight:700;margin-top:4px}
+.porzione .peso{font-family:var(--dati);font-size:14px;font-weight:600;color:var(--accento)}
+.porzione .cotto{font-family:var(--dati);font-size:10.5px;color:var(--ink-3)}
+.porzione .porz-nota{font-size:10.5px;color:var(--ink-2);line-height:1.35;margin-top:3px}
+.scala-piatto{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:11px;color:var(--ink-3)}
+.scala-piatto i{display:block;height:1px;background:var(--bordo-forte);flex:1;max-width:60px}
 
 @media (min-width:600px){
   body{font-size:15.5px}
@@ -523,10 +550,10 @@ table.dati td.num{font-family:var(--dati);text-align:right;font-variant-numeric:
       <div class="scheda piatta" style="margin-top:10px">
         <div class="etichetta">Non sai il peso? Fai una foto</div>
         <p class="sottile" style="margin-top:5px" id="stato-foto">Al ristorante non pesi niente: fotografa il piatto e stimo
-          io la porzione, oppure usa i riferimenti qui sotto.</p>
+          io la porzione, oppure confrontalo con la bilancia visiva.</p>
         <div class="riga" style="margin-top:9px;gap:8px;flex-wrap:wrap">
           <button class="btn piccolo" id="btn-foto">📷 Fotografa il piatto</button>
-          <button class="btn piccolo" id="btn-riferimenti">Riferimenti a occhio</button>
+          <button class="btn piccolo" id="btn-riferimenti">Bilancia visiva</button>
         </div>
         <input type="file" id="file-foto" accept="image/*" capture="environment" class="sr">
         <div id="anteprima-foto" style="margin-top:10px"></div>
@@ -1854,7 +1881,9 @@ function scegliCibo(id){
     return '<button type="button" class="chip" data-porz="'+o.g+'">'+o.n+(a.pezzo?(o.n==="1"?" pezzo":" pezzi"):"")+' · '+o.g+' g</button>';
   }).join("");
   q("#input-grammi").value = base;
-  q("#aiuto-porzione").textContent = a.pezzo ? "Un pezzo pesa circa "+a.pezzo+" g." : "Se non hai la bilancia, usa i riferimenti qui sotto.";
+  q("#aiuto-porzione").textContent = a.pezzo ? "Un pezzo pesa circa "+a.pezzo+" g." : "Se non hai la bilancia, guarda i disegni qui sotto.";
+  q("#anteprima-foto").innerHTML = "";
+  if(["cereali","piatti","carne","pesce"].indexOf(a.cat) >= 0) mostraRiferimenti();
 }
 
 function aggiungiCibo(){
@@ -1875,9 +1904,128 @@ function aggiungiCibo(){
 /* ---------------- stima della porzione dalla foto ----------------
    Dove c'è Claude, la foto viene letta davvero; altrove restano i
    riferimenti a occhio, che è comunque meglio di tirare a indovinare. */
+/* ---------------- LA BILANCIA VISIVA ----------------
+   Il numero in grammi non dice niente a nessuno: 80 g di pasta è
+   un'astrazione. Il mucchio dentro un piatto piano da 27 cm, invece,
+   lo riconosci. Le aree sono calcolate, non disegnate a occhio:
+   un mucchio di pasta cotta pesa circa 0,55 g/cm3 e sta alto 2 cm,
+   una fetta di carne o pesce pesa 1,05 g/cm3 e sta alta 1,5 cm. */
+const PIATTO_CM = 27;      // piatto piano da tavola
+const CONCA_CM = 19;       // la parte incassata, dove sta il cibo
+
+const PORZIONI_PASTA = [
+  {crudo:50,  cotto:110, nome:"Mezza",       nota:"quando c'è anche il secondo"},
+  {crudo:80,  cotto:175, nome:"Standard",    nota:"la porzione italiana da tabella"},
+  {crudo:100, cotto:220, nome:"Abbondante",  nota:"il piatto di casa quando hai fame"},
+  {crudo:130, cotto:290, nome:"Ristorante",  nota:"quasi sempre più di quanto pensi"}
+];
+const PORZIONI_SECONDO = [
+  {g:100, nome:"Piccola",  nota:"come il palmo della mano, senza dita"},
+  {g:150, nome:"Standard", nota:"la porzione di riferimento"},
+  {g:200, nome:"Abbondante", nota:"la tagliata media al ristorante"},
+  {g:280, nome:"Doppia",   nota:"bistecca grande, o secondo condiviso"}
+];
+
+function rnd(s){ const x = Math.sin(s*127.1)*43758.5; return x - Math.floor(x); }
+
+/* contorno leggermente irregolare: un mucchio di cibo non è un disco */
+function mucchio(cx, cy, r, seme){
+  const n = 18; let d = "";
+  for(let i=0;i<n;i++){
+    const a = i/n*Math.PI*2;
+    const rr = r * (0.93 + 0.14*rnd(seme+i));
+    d += (i?"L":"M") + (cx+rr*Math.cos(a)).toFixed(1) + " " + (cy+rr*Math.sin(a)).toFixed(1);
+  }
+  return d+"Z";
+}
+
+/* qualche penna sopra il mucchio: serve a leggerlo come pasta, non come macchia */
+function penne(cx, cy, r, seme){
+  let out = "";
+  const quante = Math.max(4, Math.round(r*r/26));
+  for(let i=0;i<quante;i++){
+    const a = rnd(seme+i*3.7)*Math.PI*2, d = Math.sqrt(rnd(seme+i*5.1))*r*0.74;
+    const x = cx+d*Math.cos(a), y = cy+d*Math.sin(a), rot = rnd(seme+i*7.3)*180;
+    out += '<rect x="'+(x-2.7).toFixed(1)+'" y="'+(y-1.25).toFixed(1)+'" width="5.4" height="2.5" rx="1.25" '+
+           'fill="var(--pasta-bordo)" opacity="0.5" transform="rotate('+rot.toFixed(0)+' '+x.toFixed(1)+' '+y.toFixed(1)+')"/>';
+  }
+  return out;
+}
+
+function disegnaPiatto(contenuto){
+  const S0 = 90/PIATTO_CM;                    // 90 unità di viewBox = 27 cm
+  const re = 45, ri = CONCA_CM/2*S0;
+  return '<svg viewBox="0 0 100 100" aria-hidden="true">'+
+    '<circle cx="50" cy="50" r="'+re+'" fill="var(--piatto)" stroke="var(--piatto-bordo)" stroke-width="1.2"/>'+
+    '<circle cx="50" cy="50" r="'+ri.toFixed(1)+'" fill="none" stroke="var(--piatto-bordo)" stroke-width="0.8" stroke-dasharray="2 2.5"/>'+
+    contenuto(S0)+'</svg>';
+}
+
+function piattoPasta(p, i){
+  // volume del mucchio -> area coperta -> diametro
+  const area = (p.cotto/0.55)/2, d = 2*Math.sqrt(area/Math.PI);
+  return disegnaPiatto(function(S0){
+    const r = d/2*S0;
+    return '<path d="'+mucchio(50,50,r,i+1)+'" fill="var(--pasta)" stroke="var(--pasta-bordo)" stroke-width="1" stroke-linejoin="round"/>'+
+           penne(50,50,r,i+1);
+  });
+}
+
+function piattoSecondo(p, i){
+  // una fetta, non un mucchio: sagoma irregolare e schiacciata, con i tagli
+  const area = (p.g/1.05)/1.5;
+  const larg = Math.sqrt(area*1.45), alt = area/larg;
+  return disegnaPiatto(function(S0){
+    const rx = larg/2*S0, ry = alt/2*S0;
+    let d = "";
+    const n = 16;
+    for(let k=0;k<n;k++){
+      const a = k/n*Math.PI*2, f = 0.92 + 0.16*rnd(i*3+k);
+      d += (k?"L":"M") + (50+rx*f*Math.cos(a)).toFixed(1) + " " + (50+ry*f*Math.sin(a)).toFixed(1);
+    }
+    let tagli = "";
+    for(let k=-1;k<=1;k++){
+      const x = 50 + k*rx*0.42;
+      tagli += '<path d="M'+x.toFixed(1)+' '+(50-ry*0.62).toFixed(1)+' L'+x.toFixed(1)+' '+(50+ry*0.62).toFixed(1)+'" '+
+               'stroke="var(--pasta-bordo)" stroke-width="1" opacity="0.4" stroke-linecap="round"/>';
+    }
+    return '<path d="'+d+'Z" fill="var(--pasta)" stroke="var(--pasta-bordo)" stroke-width="1.2" stroke-linejoin="round"/>'+tagli;
+  });
+}
+
+/* Il tap non è decorativo: sceglie la quantità e la scrive nel campo. */
+function bilanciaVisiva(alimento){
+  const secchi = ["pasta","pasta_int","riso","riso_int","farro","orzo","couscous","avena"];
+  const secondi = alimento && (alimento.cat === "carne" || alimento.cat === "pesce");
+  const crudo = alimento && secchi.indexOf(alimento.id) >= 0;
+  const lista = secondi ? PORZIONI_SECONDO : PORZIONI_PASTA;
+
+  let h = '<div class="etichetta" style="margin-top:14px">Bilancia visiva</div>'+
+    '<p class="sottile" style="margin-top:4px">'+
+    (secondi ? "Quanta carne o pesce hai nel piatto. Guarda il disegno, non la bilancia."
+     : crudo ? "Quanta pasta stai per cuocere. Il peso che tocchi al disegno è quello a crudo."
+     : "Quanto ti hanno portato. Guarda quale piatto somiglia al tuo e toccalo.")+'</p>'+
+    '<div class="porzioni">';
+  lista.forEach(function(p,i){
+    const g = secondi ? p.g : (crudo ? p.crudo : p.cotto);
+    h += '<button type="button" class="porzione" data-porzione="'+g+'" aria-pressed="false">'+
+      (secondi ? piattoSecondo(p,i) : piattoPasta(p,i))+
+      '<div class="nome">'+esc(p.nome)+'</div>'+
+      '<div class="peso">'+g+' g</div>'+
+      (secondi ? '' : '<div class="cotto">'+(crudo ? p.cotto+" g cotti" : p.crudo+" g a crudo")+'</div>')+
+      '<div class="porz-nota">'+esc(p.nota)+'</div></button>';
+  });
+  h += '</div><div class="scala-piatto"><i></i>piatto piano da '+PIATTO_CM+' cm<i></i></div>'+
+    '<p class="sottile" style="margin-top:6px">Se il tuo piatto è più piccolo, la stessa quantità sembra di più: '+
+    'quello che conta è quanta parte della conca è coperta.</p>';
+  return h;
+}
+
 function mostraRiferimenti(){
-  q("#anteprima-foto").innerHTML = '<table class="dati">'+RIFERIMENTI.map(function(r){
-    return '<tr><td>'+esc(r[0])+'</td><td class="sottile">'+esc(r[1])+'</td></tr>'; }).join("")+'</table>';
+  q("#anteprima-foto").innerHTML = bilanciaVisiva(ciboScelto)+
+    '<div class="etichetta" style="margin-top:16px">E senza piatto, con le mani</div>'+
+    '<table class="dati" style="margin-top:4px">'+RIFERIMENTI.map(function(r){
+      return '<tr><td>'+esc(r[0])+'</td><td class="sottile">'+esc(r[1])+'</td></tr>'; }).join("")+'</table>';
 }
 
 async function stimaDaFoto(file){
@@ -1886,7 +2034,7 @@ async function stimaDaFoto(file){
   prev.innerHTML = '<img src="'+url+'" alt="Piatto fotografato" style="width:100%;max-height:190px;object-fit:cover;border-radius:10px">'+
     '<p class="sottile" style="margin-top:8px" id="esito-foto">Sto guardando il piatto…</p>';
   if(!aiSample || !aiLimiti || !aiLimiti.images){
-    q("#esito-foto").innerHTML = "Qui la lettura automatica della foto non è disponibile: usa i riferimenti a occhio qui sotto.";
+    q("#esito-foto").innerHTML = "Qui la lettura automatica della foto non è disponibile: usa la bilancia visiva qui sotto.";
     mostraRiferimenti();
     return;
   }
@@ -1923,7 +2071,7 @@ async function stimaDaFoto(file){
       rate_limited:"Troppe richieste in poco tempo: riprova fra un minuto.",
       images_unavailable:"Da qui non posso leggere le immagini.",
       invalid_json:"Non sono riuscito a leggere il piatto."};
-    q("#esito-foto").textContent = (messaggi[e && e.code] || "Non sono riuscito a stimare la porzione.")+" Usa i riferimenti qui sotto.";
+    q("#esito-foto").textContent = (messaggi[e && e.code] || "Non sono riuscito a stimare la porzione.")+" Usa la bilancia visiva qui sotto.";
     mostraRiferimenti();
   }
 }
@@ -2224,6 +2372,11 @@ function collega(){
     if(t.dataset.cibo) scegliCibo(t.dataset.cibo);
     else if(t.dataset.porz){ q("#input-grammi").value = t.dataset.porz;
       qa("#chips-porzione .chip").forEach(function(c){ c.setAttribute("aria-pressed", c===t); }); }
+    else if(t.dataset.porzione){
+      q("#input-grammi").value = t.dataset.porzione;
+      qa(".porzione").forEach(function(c){ c.setAttribute("aria-pressed", c === t); });
+      q("#input-grammi").scrollIntoView({block:"center", behavior:"smooth"});
+    }
     else if(t.dataset.stima) aggiungiDaStima(+t.dataset.stima);
     else if(t.dataset.tipoEv){ tipoEventoScelto = t.dataset.tipoEv; renderAgenda(); }
     else if(t.dataset.escl){

@@ -44,6 +44,13 @@ Il movimento si dichiara prima e si consuntiva dopo. Un'ora di camminata program
 di oggi; mezz'ora fatta davvero significa che la differenza torna in banca e la ritrovi domani.
 È la stessa disciplina di un cantiere: preventivo e consuntivo.
 
+### La bilancia visiva
+Nessuno pesa il cibo fuori casa, e "80 grammi di pasta" non significa niente per chi non lo ha mai
+pesato. Quattro piatti disegnati con dentro quattro quantità reali risolvono il problema senza
+chiedere niente all'utente: riconoscere è molto più facile che stimare. Le aree sono calcolate
+dalla densità del cibo, non disegnate a occhio, e il disegno è operativo — lo tocchi e diventa
+il peso registrato.
+
 ### Dalla bilancia ai valori
 Il peso è un indicatore lento e rumoroso. Le leve vere sono altre: grassi saturi, fibra, zuccheri,
 alcol, sodio, pesce grasso, movimento. L'app le misura ogni giorno e le lega al referto del sangue,

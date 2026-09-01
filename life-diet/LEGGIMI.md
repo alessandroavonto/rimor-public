@@ -86,9 +86,14 @@ Per ogni pasto proposto ci sono quattro risposte, e nessuna è un errore:
 
 A casa pesi. Fuori no. Quindi:
 
+* **la bilancia visiva** — quattro piatti piani da 27 cm disegnati con dentro quattro quantità
+  diverse: mezza porzione, standard, abbondante, ristorante. Guardi quale somiglia a quello che hai
+  davanti e lo tocchi: i grammi finiscono nel campo. Le aree non sono disegnate a occhio, sono
+  calcolate (un mucchio di pasta cotta pesa circa 0,55 g/cm³ e sta alto 2 cm; una fetta di carne
+  1,05 g/cm³ e 1,5 cm), e si apre da sola per pasta, riso, piatti, carne e pesce;
 * **porzioni tipiche** per categoria (piccola / media / abbondante) e per pezzo;
-* **riferimenti a occhio** — il palmo della mano è 100–120 g di carne, il pugno chiuso 150–200 g
-  di pasta cotta, il pollice 10 g di olio, il piatto piano è 26–28 cm;
+* **riferimenti con le mani** — il palmo è 100–120 g di carne, il pugno chiuso 150–200 g
+  di pasta cotta, il pollice 10 g di olio;
 * **foto del piatto**: dove l'app gira dentro Claude, la foto viene letta davvero e restituisce
   i componenti con i grammi stimati, che finiscono nel diario con un tocco.
   La foto non viene salvata da nessuna parte.
